@@ -3,32 +3,50 @@ import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
+// TODO: replace icon
+import SearchIcon from 'material-ui/svg-icons/action/search';
+import MysteryIcon from 'material-ui/svg-icons/action/room';
+import TweetIcon from 'material-ui/svg-icons/av/note';
+
+import BoothComponent from './components/BoothComponent';
+import MysteryComponent from './components/MysteryComponent';
+import TweetsComponent from './components/TweetsComponent';
+
+const TabLabels = {
+    Booth: "Booth",
+    Mystery: "Mystery",
+    Tweets: "Tweets",
+};
+
 class IndexContainer extends React.Component {
     state = {
-        tabIndex: 1
+        tab: TabLabels.Mystery
     };
 
 
-    _handleChangeTabs = (selectedTabIndex) => {
-        this.setState({tabIndex: selectedTabIndex});
+    _handleChangeTabs = (selectedTab) => {
+        this.setState({tab: selectedTab});
     };
 
     render() {
-        const {tabIndex} = this.state;
+        const {tab} = this.state;
 
         return (
             <div>
-                <AppBar title="Y Gadgets"/>
+                <AppBar title={TabLabels[tab]}/>
                 <Tabs
-                    value={tabIndex}
+                    value={tab}
                     onChange={this._handleChangeTabs}>
-                    <Tab label="Booth" value={0}/>
-                    <Tab label="Mystery" value={1}/>
-                    <Tab label="Tweets" value={2}/>
+                    <Tab icon={<SearchIcon/>} value={TabLabels.Booth}>
+                        <BoothComponent/>
+                    </Tab>
+                    <Tab icon={<MysteryIcon/>} value={TabLabels.Mystery}>
+                        <MysteryComponent/>
+                    </Tab>
+                    <Tab icon={<TweetIcon/>} value={TabLabels.Tweets}>
+                        <TweetsComponent/>
+                    </Tab>
                 </Tabs>
-                <div>
-                    App component.
-                </div>
             </div>
         )
     }
