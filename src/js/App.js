@@ -1,8 +1,13 @@
 import React from 'react'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+import IndexContainer from './container/index/IndexContainer';
 
 const App = () => {
     return (
-        <div>App</div>
+        <MuiThemeProvider>
+            <IndexContainer/>
+        </MuiThemeProvider>
     )
 };
 
