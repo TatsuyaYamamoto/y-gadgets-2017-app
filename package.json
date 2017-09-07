@@ -1,0 +1,22 @@
+{
+  "name": "y-gadgets-2017-app",
+  "version": "1.0.0",
+  "description": "yokohama gadgets fes app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/y-gadgets/2017-app.git"
+  },
+  "keywords": [
+    "gadgets"
+  ],
+  "author": "Tatsuya Yamamoto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/y-gadgets/2017-app/issues"
+  },
+  "homepage": "https://github.com/y-gadgets/2017-app#readme"
+}
