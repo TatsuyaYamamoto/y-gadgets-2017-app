@@ -1,6 +1,7 @@
 import React from 'react';
 
 import AppBar from 'material-ui/AppBar';
+import TextField from 'material-ui/TextField';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
 // TODO: replace icon
@@ -23,6 +24,19 @@ class IndexContainer extends React.Component {
         tab: TabLabels.Mystery
     };
 
+    _getAppBarTitleComponent = (tab) => {
+        let component = tab;
+
+        if (tab === TabLabels.Booth) {
+            component = (
+                <TextField
+                    inputStyle={{color: "#ffffff"}}
+                    hintText="Search booth"/>
+            )
+        }
+
+        return component;
+    };
 
     _handleChangeTabs = (selectedTab) => {
         this.setState({tab: selectedTab});
@@ -33,7 +47,7 @@ class IndexContainer extends React.Component {
 
         return (
             <div>
-                <AppBar title={TabLabels[tab]}/>
+                <AppBar title={this._getAppBarTitleComponent(tab)}/>
                 <Tabs
                     value={tab}
                     onChange={this._handleChangeTabs}>
