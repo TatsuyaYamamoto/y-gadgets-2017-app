@@ -3,17 +3,9 @@ import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import TextField from 'material-ui/TextField';
 
-// TODO: replace icon
-import SearchIcon from 'material-ui/svg-icons/action/search';
-import MysteryIcon from 'material-ui/svg-icons/action/room';
-import TweetIcon from 'material-ui/svg-icons/av/note';
-
-import BoothComponent from '../components/BoothComponent';
-import MysteryComponent from '../components/MysteryComponent';
-import TweetsComponent from '../components/TweetsComponent';
 import Navigation from "../components/Navigation";
 
-class IndexContainer extends React.Component {
+class SearchSpaceContainer extends React.Component {
     handleClickNavigationButton = (index) => {
         switch (index) {
             case 0:
@@ -42,20 +34,23 @@ class IndexContainer extends React.Component {
 
     render() {
         const styles = this.getStyles();
-
         return (
             <div>
                 <AppBar
                     showMenuIconButton={false}
-                    title="Mystery"/>
+                    title={(
+                        <TextField
+                            inputStyle={{color: "#ffffff"}}
+                            hintText="Search booth"/>
+                    )}/>
 
                 <Navigation
                     style={styles.navigation}
-                    activeIndex={1}
+                    activeIndex={0}
                     onClick={(i) => this.handleClickNavigationButton(i)}/>
             </div>
         )
     }
 }
 
-export default IndexContainer;
+export default SearchSpaceContainer;

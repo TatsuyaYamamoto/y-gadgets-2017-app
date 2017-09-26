@@ -8,13 +8,15 @@ import TweetsComponent from "../components/TweetsComponent";
 class TweetContainer extends React.Component {
     handleClickNavigationButton = (index) => {
         switch (index) {
+            case 0:
+                this.props.history.push("/search");
+                break;
             case 1:
                 this.props.history.push("/");
                 break;
             case 2:
                 this.props.history.push("timeline");
                 break;
-            case 0:
             default:
                 break;
         }
