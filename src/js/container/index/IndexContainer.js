@@ -2,7 +2,6 @@ import React from 'react';
 
 import AppBar from 'material-ui/AppBar';
 import TextField from 'material-ui/TextField';
-import {Tabs, Tab} from 'material-ui/Tabs';
 
 // TODO: replace icon
 import SearchIcon from 'material-ui/svg-icons/action/search';
@@ -12,55 +11,63 @@ import TweetIcon from 'material-ui/svg-icons/av/note';
 import BoothComponent from './components/BoothComponent';
 import MysteryComponent from './components/MysteryComponent';
 import TweetsComponent from './components/TweetsComponent';
-
-const TabLabels = {
-    Booth: "Booth",
-    Mystery: "Mystery",
-    Tweets: "Tweets",
-};
+import Navigation from "../../components/Navigation";
 
 class IndexContainer extends React.Component {
     state = {
-        tab: TabLabels.Mystery
+        navigationIndex: 0
     };
 
-    _getAppBarTitleComponent = (tab) => {
-        let component = tab;
+    getStyles = () => {
+        return {
+            navigation: {
+                position: 'fixed',
+                bottom: 0,
+                width: '100%'
+            }
+        }
+    };
 
-        if (tab === TabLabels.Booth) {
-            component = (
-                <TextField
-                    inputStyle={{color: "#ffffff"}}
-                    hintText="Search booth"/>
-            )
+    getAppBar = (navigationIndex) => {
+        let title;
+
+        switch (navigationIndex) {
+            case 0:
+                title = (
+                    <TextField
+                        inputStyle={{color: "#ffffff"}}
+                        hintText="Search booth"/>
+                );
+                break;
+            case 1:
+                title = "Mystery";
+                break;
+            case 2:
+                title = "Twitter";
+                break;
         }
 
-        return component;
-    };
-
-    _handleChangeTabs = (selectedTab) => {
-        this.setState({tab: selectedTab});
+        return (
+            <AppBar
+                showMenuIconButton={false}
+                title={title}/>
+        )
     };
 
     render() {
-        const {tab} = this.state;
+        const styles = this.getStyles();
+        const appBar = this.getAppBar(this.state.navigationIndex);
 
         return (
             <div>
-                <AppBar title={this._getAppBarTitleComponent(tab)}/>
-                <Tabs
-                    value={tab}
-                    onChange={this._handleChangeTabs}>
-                    <Tab icon={<SearchIcon/>} value={TabLabels.Booth}>
-                        <BoothComponent/>
-                    </Tab>
-                    <Tab icon={<MysteryIcon/>} value={TabLabels.Mystery}>
-                        <MysteryComponent/>
-                    </Tab>
-                    <Tab icon={<TweetIcon/>} value={TabLabels.Tweets}>
-                        <TweetsComponent/>
-                    </Tab>
-                </Tabs>
+                {appBar}
+
+                <Navigation
+                    style={styles.navigation}
+                    activeIndex={0}
+                    onClick={(i) => {
+                        console.log(i)
+                    }}/>
             </div>
         )
     }
