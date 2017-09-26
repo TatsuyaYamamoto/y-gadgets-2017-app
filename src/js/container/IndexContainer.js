@@ -8,10 +8,10 @@ import SearchIcon from 'material-ui/svg-icons/action/search';
 import MysteryIcon from 'material-ui/svg-icons/action/room';
 import TweetIcon from 'material-ui/svg-icons/av/note';
 
-import BoothComponent from './components/BoothComponent';
-import MysteryComponent from './components/MysteryComponent';
-import TweetsComponent from './components/TweetsComponent';
-import Navigation from "../../components/Navigation";
+import BoothComponent from '../components/BoothComponent';
+import MysteryComponent from '../components/MysteryComponent';
+import TweetsComponent from '../components/TweetsComponent';
+import Navigation from "../components/Navigation";
 
 class IndexContainer extends React.Component {
     state = {
