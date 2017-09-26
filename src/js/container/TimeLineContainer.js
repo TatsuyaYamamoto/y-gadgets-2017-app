@@ -1,11 +1,17 @@
 import React from 'react';
 
 import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+import SettingIcon from 'material-ui/svg-icons/action/settings';
 
 import Navigation from "../components/Navigation";
 import TweetsComponent from "../components/TweetsComponent";
 
 class TweetContainer extends React.Component {
+    handleClickSettingButton = () =>{
+        this.props.history.push('setting');
+    };
+
     handleClickNavigationButton = (index) => {
         switch (index) {
             case 0:
@@ -38,8 +44,10 @@ class TweetContainer extends React.Component {
         return (
             <div>
                 <AppBar
+                    title="Timeline"
                     showMenuIconButton={false}
-                    title="Timeline"/>
+                    iconElementRight={<IconButton><SettingIcon/></IconButton>}
+                    onRightIconButtonTouchTap={this.handleClickSettingButton}/>
                 <TweetsComponent/>
                 <Navigation
                     style={styles.navigation}

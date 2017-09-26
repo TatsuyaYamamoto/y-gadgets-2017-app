@@ -1,19 +1,16 @@
 import React from 'react';
 
 import AppBar from 'material-ui/AppBar';
-import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
+import SettingIcon from 'material-ui/svg-icons/action/settings';
 
-// TODO: replace icon
-import SearchIcon from 'material-ui/svg-icons/action/search';
-import MysteryIcon from 'material-ui/svg-icons/action/room';
-import TweetIcon from 'material-ui/svg-icons/av/note';
-
-import BoothComponent from '../components/BoothComponent';
-import MysteryComponent from '../components/MysteryComponent';
-import TweetsComponent from '../components/TweetsComponent';
 import Navigation from "../components/Navigation";
 
 class IndexContainer extends React.Component {
+    handleClickSettingButton = () =>{
+        this.props.history.push('setting');
+    };
+
     handleClickNavigationButton = (index) => {
         switch (index) {
             case 0:
@@ -47,6 +44,8 @@ class IndexContainer extends React.Component {
             <div>
                 <AppBar
                     showMenuIconButton={false}
+                    iconElementRight={<IconButton><SettingIcon/></IconButton>}
+                    onRightIconButtonTouchTap={this.handleClickSettingButton}
                     title="Mystery"/>
 
                 <Navigation
