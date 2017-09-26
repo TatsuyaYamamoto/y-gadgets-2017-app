@@ -1,19 +1,11 @@
 import React from 'react';
 
 import AppBar from 'material-ui/AppBar';
-import TextField from 'material-ui/TextField';
 
-// TODO: replace icon
-import SearchIcon from 'material-ui/svg-icons/action/search';
-import MysteryIcon from 'material-ui/svg-icons/action/room';
-import TweetIcon from 'material-ui/svg-icons/av/note';
-
-import BoothComponent from '../components/BoothComponent';
-import MysteryComponent from '../components/MysteryComponent';
-import TweetsComponent from '../components/TweetsComponent';
 import Navigation from "../components/Navigation";
+import TweetsComponent from "../components/TweetsComponent";
 
-class IndexContainer extends React.Component {
+class TweetContainer extends React.Component {
     handleClickNavigationButton = (index) => {
         switch (index) {
             case 1:
@@ -28,6 +20,7 @@ class IndexContainer extends React.Component {
         }
     };
 
+
     getStyles = () => {
         return {
             navigation: {
@@ -40,20 +33,19 @@ class IndexContainer extends React.Component {
 
     render() {
         const styles = this.getStyles();
-
         return (
             <div>
                 <AppBar
                     showMenuIconButton={false}
-                    title="Mystery"/>
-
+                    title="Timeline"/>
+                <TweetsComponent/>
                 <Navigation
                     style={styles.navigation}
-                    activeIndex={1}
+                    activeIndex={2}
                     onClick={(i) => this.handleClickNavigationButton(i)}/>
             </div>
         )
     }
 }
 
-export default IndexContainer;
+export default TweetContainer;
