@@ -8,7 +8,7 @@ import Navigation from "../components/Navigation";
 import MysteryComponent from "../components/MysteryComponent";
 
 class IndexContainer extends React.Component {
-    handleClickSettingButton = () =>{
+    handleClickSettingButton = () => {
         this.props.history.push('setting');
     };
 
@@ -30,10 +30,18 @@ class IndexContainer extends React.Component {
 
     getStyles = () => {
         return {
+            appBar: {
+                position: 'fixed',
+                top: 0,
+            },
             navigation: {
                 position: 'fixed',
                 bottom: 0,
                 width: '100%'
+            },
+            content: {
+                marginTop: 64,  // spacing.desktopKeylineIncrement
+                marginBottom: 56, // getMuiTheme.bottomNavigation.height
             }
         }
     };
@@ -47,9 +55,12 @@ class IndexContainer extends React.Component {
                     showMenuIconButton={false}
                     iconElementRight={<IconButton><SettingIcon/></IconButton>}
                     onRightIconButtonTouchTap={this.handleClickSettingButton}
-                    title="Mystery"/>
+                    title="Mystery"
+                    style={styles.appBar}/>
 
-                <MysteryComponent/>
+                <div style={styles.content}>
+                    <MysteryComponent/>
+                </div>
 
                 <Navigation
                     style={styles.navigation}
