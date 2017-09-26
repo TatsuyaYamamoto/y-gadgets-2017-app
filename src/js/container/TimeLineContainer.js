@@ -5,7 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import SettingIcon from 'material-ui/svg-icons/action/settings';
 
 import Navigation from "../components/Navigation";
-import TweetsComponent from "../components/TweetsComponent";
+import FxTimeLine from "../components/FxTimeLine";
 
 class TweetContainer extends React.Component {
     handleClickSettingButton = () =>{
@@ -48,7 +48,7 @@ class TweetContainer extends React.Component {
                     showMenuIconButton={false}
                     iconElementRight={<IconButton><SettingIcon/></IconButton>}
                     onRightIconButtonTouchTap={this.handleClickSettingButton}/>
-                <TweetsComponent/>
+                <FxTimeLine/>
                 <Navigation
                     style={styles.navigation}
                     activeIndex={2}
