@@ -1,11 +1,21 @@
 import React from 'react';
 
-class MysteryComponent extends React.Component {
-    render() {
-        return (
-            <div>Mystery</div>
-        )
-    }
-}
+import Question from './Question';
+
+const MysteryComponent = (props) => {
+    return (
+        <div>
+            <Question/>
+            <Question/>
+            <Question/>
+            <Question/>
+            <Question/>
+            <Question/>
+            <Question/>
+            <Question/>
+            <Question/>
+        </div>
+    )
+};
 
 export default MysteryComponent;

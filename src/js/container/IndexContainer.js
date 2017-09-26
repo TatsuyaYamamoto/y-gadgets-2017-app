@@ -5,6 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import SettingIcon from 'material-ui/svg-icons/action/settings';
 
 import Navigation from "../components/Navigation";
+import MysteryComponent from "../components/MysteryComponent";
 
 class IndexContainer extends React.Component {
     handleClickSettingButton = () =>{
@@ -47,6 +48,8 @@ class IndexContainer extends React.Component {
                     iconElementRight={<IconButton><SettingIcon/></IconButton>}
                     onRightIconButtonTouchTap={this.handleClickSettingButton}
                     title="Mystery"/>
+
+                <MysteryComponent/>
 
                 <Navigation
                     style={styles.navigation}
