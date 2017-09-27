@@ -3,12 +3,15 @@ import {syncHistoryWithStore, routerReducer, routerMiddleware} from 'react-route
 import thunk from 'redux-thunk';
 import createHistory from 'history/createHashHistory'
 
+import firebase from './firebase';
+
 // Singleton that app can use.
 // developer MUST use methods provided by react-router-redux.
 const history = createHistory();
 
 export const reducer = combineReducers({
     routing: routerReducer,
+    firebase
 });
 
 export const store = createStore(
