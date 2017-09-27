@@ -1,6 +1,28 @@
 import React from 'react';
 
 class TweetsComponent extends React.Component {
+    componentDidMount() {
+        console.log("componentDidMount")
+        // Tweet component script
+        // https://twitter.com/settings/widgets
+        !function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+            if (!d.getElementById(id)) {
+                js = d.createElement(s);
+                js.id = id;
+                js.src = p + "://platform.twitter.com/widgets.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }
+        }(document, "script", "twitter-wjs")
+    }
+
+    componentWillUnmount() {
+        !function (d, s, id) {
+            const target = d.getElementById(id);
+            target.parentNode.removeChild(target);
+        }(document, "script", "twitter-wjs")
+    }
+
     render() {
         return (
             <div style={{textAlign: "center"}}>
