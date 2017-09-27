@@ -12,23 +12,6 @@ class TweetContainer extends React.Component {
         this.props.history.push('setting');
     };
 
-    handleClickNavigationButton = (index) => {
-        switch (index) {
-            case 0:
-                this.props.history.push("/search");
-                break;
-            case 1:
-                this.props.history.push("/");
-                break;
-            case 2:
-                this.props.history.push("timeline");
-                break;
-            default:
-                break;
-        }
-    };
-
-
     getStyles = () => {
         return {
             navigation: {
@@ -51,8 +34,7 @@ class TweetContainer extends React.Component {
                 <FxTimeLine/>
                 <Navigation
                     style={styles.navigation}
-                    activeIndex={2}
-                    onClick={(i) => this.handleClickNavigationButton(i)}/>
+                    activeIndex={2}/>
             </div>
         )
     }

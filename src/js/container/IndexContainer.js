@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {push} from 'react-router-redux';
 
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
@@ -6,26 +8,11 @@ import SettingIcon from 'material-ui/svg-icons/action/settings';
 
 import Navigation from "../components/Navigation";
 import MysteryComponent from "../components/MysteryComponent";
+import {loadQuestions} from "../modules/firebase";
 
 class IndexContainer extends React.Component {
     handleClickSettingButton = () => {
         this.props.history.push('setting');
-    };
-
-    handleClickNavigationButton = (index) => {
-        switch (index) {
-            case 0:
-                this.props.history.push("/search");
-                break;
-            case 1:
-                this.props.history.push("/");
-                break;
-            case 2:
-                this.props.history.push("timeline");
-                break;
-            default:
-                break;
-        }
     };
 
     getStyles = () => {
@@ -46,6 +33,10 @@ class IndexContainer extends React.Component {
         }
     };
 
+    componentDidMount() {
+        this.props.loadQuestions();
+    }
+
     render() {
         const styles = this.getStyles();
 
@@ -64,11 +55,24 @@ class IndexContainer extends React.Component {
 
                 <Navigation
                     style={styles.navigation}
-                    activeIndex={1}
-                    onClick={(i) => this.handleClickNavigationButton(i)}/>
+                    activeIndex={1}/>
             </div>
         )
     }
 }
 
-export default IndexContainer;
+function mapStateToProps(state) {
+    return {
+        questions: state.questions
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        loadQuestions: () => {
+            dispatch(loadQuestions())
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(IndexContainer);

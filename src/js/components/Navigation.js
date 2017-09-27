@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {push} from 'react-router-redux';
 
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
@@ -9,42 +11,57 @@ const recentsIcon = <IconLocationOn/>;
 const favoritesIcon = <IconLocationOn/>;
 const nearbyIcon = <IconLocationOn/>;
 
-const Navigation = (props) => {
-    const {
-        style,
-        activeIndex,
-        onClick
-    } = props;
+class Navigation extends React.Component {
+    render() {
+        const {
+            style,
+            activeIndex,
+        } = this.props;
 
-    return (
-        <Paper
-            style={style}
-            zDepth={1}>
-            <BottomNavigation selectedIndex={activeIndex}>
-                <BottomNavigationItem
-                    label="Search"
-                    icon={recentsIcon}
-                    onClick={() => onClick(0)}
-                />
-                <BottomNavigationItem
-                    label="Mystery"
-                    icon={favoritesIcon}
-                    onClick={() => onClick(1)}
-                />
-                <BottomNavigationItem
-                    label="Twitter"
-                    icon={nearbyIcon}
-                    onClick={() => onClick(2)}
-                />
-            </BottomNavigation>
-        </Paper>
-    )
-};
+        return (
+            <Paper
+                style={style}
+                zDepth={1}>
+                <BottomNavigation selectedIndex={activeIndex}>
+                    <BottomNavigationItem
+                        label="Search"
+                        icon={recentsIcon}
+                        onClick={() => this.props.push('/search')}
+                    />
+                    <BottomNavigationItem
+                        label="Mystery"
+                        icon={favoritesIcon}
+                        onClick={() => this.props.push('/')}
+                    />
+                    <BottomNavigationItem
+                        label="Twitter"
+                        icon={nearbyIcon}
+                        onClick={() => this.props.push('/timeline')}
+                    />
+                </BottomNavigation>
+            </Paper>
+        )
+    }
+}
 
 Navigation.propTypes = {
     style: PropTypes.object,
     activeIndex: PropTypes.number,
-    onClick: PropTypes.func,
+    push: PropTypes.func,
 };
 
-export default Navigation;
+
+function mapStateToProps(state) {
+    return {}
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        push: (path) => {
+            dispatch(push(path));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
+
