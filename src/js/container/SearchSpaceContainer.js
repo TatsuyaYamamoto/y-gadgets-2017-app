@@ -1,11 +1,16 @@
 import React from 'react';
 
-import AppBar from 'material-ui/AppBar';
-import TextField from 'material-ui/TextField';
-
 import Navigation from "../components/Navigation";
+import SearchAppBar from "../components/SearchAppBar";
 
 class SearchSpaceContainer extends React.Component {
+    state = {
+        searchText: ''
+    };
+
+    handleChangeSearchText = (event, newValue) => {
+        this.setState({searchText: newValue});
+    };
 
     getStyles = () => {
         return {
@@ -19,15 +24,13 @@ class SearchSpaceContainer extends React.Component {
 
     render() {
         const styles = this.getStyles();
+        const {searchText} = this.state;
+
         return (
             <div>
-                <AppBar
-                    showMenuIconButton={false}
-                    title={(
-                        <TextField
-                            inputStyle={{color: "#ffffff"}}
-                            hintText="Search booth"/>
-                    )}/>
+                <SearchAppBar
+                    value={searchText}
+                    onChange={this.handleChangeSearchText}/>
 
                 <Navigation
                     style={styles.navigation}
