@@ -39,6 +39,7 @@ class IndexContainer extends React.Component {
 
     render() {
         const styles = this.getStyles();
+        const {questions} = this.props;
 
         return (
             <div>
@@ -50,7 +51,7 @@ class IndexContainer extends React.Component {
                     style={styles.appBar}/>
 
                 <div style={styles.content}>
-                    <MysteryComponent/>
+                    <MysteryComponent questions={questions}/>
                 </div>
 
                 <Navigation
@@ -63,7 +64,7 @@ class IndexContainer extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        questions: state.questions
+        questions: state.firebase.questions
     }
 }
 
