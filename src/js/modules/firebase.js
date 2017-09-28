@@ -166,7 +166,9 @@ export default function reducer(state = initialState, action) {
             return state;
 
         case Actions.LOGIN_SUCCESS:
-            return state;
+            return Object.assign({}, state, {
+                login: payload.login
+            });
 
         case Actions.LOGIN_FAILURE:
             return state;

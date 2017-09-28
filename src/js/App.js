@@ -5,10 +5,14 @@ import {Provider} from 'react-redux'
 
 import Routing from './Routing';
 import {store} from './modules/redux';
+import {login} from './modules/firebase';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
+
+// log-in firebase app.
+store.dispatch(login());
 
 const App = () => {
     return (
