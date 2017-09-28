@@ -3,30 +3,54 @@ import PropTypes from 'prop-types';
 
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
-import SearchIcon from 'material-ui/svg-icons/action/search';
+import IconButton from 'material-ui/IconButton';
+import SearchSvgIcon from 'material-ui/svg-icons/action/search';
+import CloseSvgIcon from 'material-ui/svg-icons/navigation/close';
+
+const SearchIcon = (props) => (<IconButton style={props.style} onClick={props.onClick}><SearchSvgIcon/></IconButton>);
+const ClearIcon = (props) => (<IconButton style={props.style} onClick={props.onClick}><CloseSvgIcon/></IconButton>);
 
 const SearchAppBar = (props) => {
     const {value, onChange} = props;
 
     const styles = {
         paper: {
+            display: 'flex',
             // spacing.desktopKeylineIncrement
             // this value is same as height of appBar.
             height: 64,
             width: '100%'
-        }
+        },
+        leftIcon: {
+            width: 64,
+            height: 64,
+        },
+        rightIcon: {
+            width: 64,
+            height: 64,
+            marginRight: 0,
+            marginLeft: 'auto',
+        },
+        text: {
+            margin: 8,
+            width: '70%',
+            marginLeft: 'auto',
+        },
     };
 
     return (
         <Paper
             style={styles.paper}
             zDepth={1}>
-            <SearchIcon/>
+            <SearchIcon style={styles.leftIcon}/>
 
             <TextField
+                style={styles.text}
                 hintText="Search booth"
                 value={value}
                 onChange={onChange}/>
+
+            <ClearIcon style={styles.rightIcon}/>
         </Paper>
     )
 };
