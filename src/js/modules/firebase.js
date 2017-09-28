@@ -108,13 +108,22 @@ export function loadBooths() {
     return function (dispatch) {
         dispatch({type: Actions.LOAD_BOOTHS_REQUEST});
 
-        return app.database().ref('booths')
-            .then(() => {
-                dispatch({type: Actions.LOAD_BOOTHS_SUCCESS});
+        return app.database().ref('booths').once('value')
+            .then((snapshot) => {
+                dispatch(loadBoothsSuccess(snapshot.val()));
             })
             .catch((error) => {
                 dispatch({type: Actions.LOAD_BOOTHS_FAILURE});
             });
+    }
+}
+
+function loadBoothsSuccess(snapshot) {
+    return {
+        type: Actions.LOAD_BOOTHS_SUCCESS,
+        payload: {
+            snapshot
+        }
     }
 }
 
@@ -156,7 +165,8 @@ function getCurrentUser() {
 // ---------------------------------------------------------------------------
 const initialState = {
     login: null,
-    questions: {}
+    questions: {},
+    booths: {}
 };
 
 export default function reducer(state = initialState, action) {
@@ -188,7 +198,9 @@ export default function reducer(state = initialState, action) {
             return state;
 
         case Actions.LOAD_BOOTHS_SUCCESS:
-            return state;
+            return Object.assign({}, state, {
+                booths: payload.snapshot
+            });
 
         case Actions.LOAD_BOOTHS_FAILURE:
             return state;
