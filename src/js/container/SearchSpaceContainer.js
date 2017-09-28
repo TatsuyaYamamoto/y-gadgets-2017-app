@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {push} from 'react-router-redux';
 
 import Navigation from "../components/Navigation";
 import SearchAppBar from "../components/SearchAppBar";
@@ -10,6 +11,10 @@ import BoothList from "../components/BoothList";
 class SearchSpaceContainer extends React.Component {
     state = {
         searchText: ''
+    };
+
+    handleClickBoothItem = (id) => {
+        this.props.push(`/booths/${id}`);
     };
 
     handleChangeSearchText = (event, newValue) => {
@@ -54,7 +59,8 @@ class SearchSpaceContainer extends React.Component {
 
                 <div style={styles.content}>
                     <BoothList
-                        booths={booths}/>
+                        booths={booths}
+                        onClick={this.handleClickBoothItem}/>
                 </div>
 
                 <Navigation
@@ -73,6 +79,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        push: (path) => {
+            dispatch(push(path))
+        },
         loadBooths: () => {
             dispatch(loadBooths())
         }

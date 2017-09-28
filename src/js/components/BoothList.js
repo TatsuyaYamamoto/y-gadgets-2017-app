@@ -5,7 +5,7 @@ import {List, ListItem} from 'material-ui/List';
 
 class BoothList extends React.Component {
     render() {
-        const {booths} = this.props;
+        const {booths, onClick} = this.props;
 
         return (
             <List>
@@ -15,7 +15,7 @@ class BoothList extends React.Component {
                             key={key}
                             primaryText={booths[key].name}
                             secondaryText={booths[key].id}
-                        />
+                            onClick={() => onClick(key)}/>
                     )
                 })}
             </List>
