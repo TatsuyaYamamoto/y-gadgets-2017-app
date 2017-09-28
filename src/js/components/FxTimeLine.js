@@ -2,7 +2,6 @@ import React from 'react';
 
 class TweetsComponent extends React.Component {
     componentDidMount() {
-        console.log("componentDidMount")
         // Tweet component script
         // https://twitter.com/settings/widgets
         !function (d, s, id) {
