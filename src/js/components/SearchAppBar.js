@@ -11,16 +11,16 @@ const SearchIcon = (props) => (<IconButton style={props.style} onClick={props.on
 const ClearIcon = (props) => (<IconButton style={props.style} onClick={props.onClick}><CloseSvgIcon/></IconButton>);
 
 const SearchAppBar = (props) => {
-    const {value, onChange} = props;
+    const {style, value, onChange} = props;
 
     const styles = {
-        paper: {
+        root: Object.assign({
             display: 'flex',
             // spacing.desktopKeylineIncrement
             // this value is same as height of appBar.
             height: 64,
             width: '100%'
-        },
+        }, style),
         leftIcon: {
             width: 64,
             height: 64,
@@ -40,7 +40,7 @@ const SearchAppBar = (props) => {
 
     return (
         <Paper
-            style={styles.paper}
+            style={styles.root}
             zDepth={1}>
             <SearchIcon style={styles.leftIcon}/>
 
