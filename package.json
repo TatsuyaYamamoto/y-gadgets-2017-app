@@ -4,8 +4,10 @@
   "description": "yokohama gadgets fes app",
   "main": "index.js",
   "scripts": {
+    "clean": "rimraf dist demo",
     "start": "webpack-dev-server --progress --colors --watch",
-    "build": "webpack"
+    "build": "npm run clean && webpack --progress",
+    "build:demo": "npm run clean && webpack --progress --optimize-minimize --output-path demo"
   },
   "repository": {
     "type": "git",
