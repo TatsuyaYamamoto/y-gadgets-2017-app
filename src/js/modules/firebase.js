@@ -104,6 +104,7 @@ function loadQuestionsSuccess(snapshot) {
     }
 }
 
+// TODO: can use query of booth id.
 export function loadBooths() {
     return function (dispatch) {
         dispatch({type: Actions.LOAD_BOOTHS_REQUEST});

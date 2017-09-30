@@ -8,6 +8,8 @@ import IconButton from 'material-ui/IconButton';
 import ArrowBackIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import {loadBooths} from '../modules/firebase';
+
 const LikeButton = (props) => (
     <RaisedButton
         fullWidth
@@ -34,6 +36,16 @@ class BoothDetailContainer extends React.Component {
             },
         }
     };
+
+    componentDidMount() {
+        if (!this.props.booth) {
+            const {id} = this.props.match.params;
+            const {loadBooths} = this.props;
+
+            loadBooths(id);
+        }
+
+    }
 
     render() {
         const styles = this.getStyles();
@@ -76,8 +88,10 @@ class BoothDetailContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     const boothId = ownProps.match.params.id;
+    const booth = state.firebase.booths[boothId];
+
     return {
-        booth: state.firebase.booths[boothId]
+        booth
     }
 }
 
@@ -85,6 +99,9 @@ function mapDispatchToProps(dispatch) {
     return {
         goBack: () => {
             dispatch(goBack())
+        },
+        loadBooths: (id) => {
+            dispatch(loadBooths(id));
         }
     }
 }
