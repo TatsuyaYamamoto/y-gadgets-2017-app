@@ -1,6 +1,7 @@
 import React from 'react';
 
 import TextField from 'material-ui/TextField';
+import CircularProgress from 'material-ui/CircularProgress';
 
 const CharField = (props) => {
     const {onChange} = props;
@@ -71,28 +72,33 @@ class MysteryComponent extends React.Component {
 
     render() {
         const {questions} = this.props;
+
+        const renderingContent =
+            questions.isEmpty() ?
+                // TODO create loading component.
+                <CircularProgress/> :
+                <div>
+                    {questions.map(q => {
+                        const {sentence, answer} = q;
+                        return (
+                            <div key={answer}>
+
+                                {sentence}<br/>
+
+                                <AnswerField
+                                    answer={answer}
+                                    onChange={(newValue) => {
+                                        this.onChangeAnswerField(key, newValue);
+                                    }}/>
+                            </div>
+                        )
+                    })}
+                </div>;
+
         return (
-            <div>
-                {Object.keys(questions).map(key => {
-                    const {sentence, answer} = questions[key];
-
-                    return (
-                        <div
-                            key={answer}
-                            style={{textAlign: 'center'}}>
-
-                            {sentence}<br/>
-
-                            <AnswerField
-                                answer={answer}
-                                onChange={(newValue) => {
-                                    this.onChangeAnswerField(key, newValue);
-                                }}/>
-                        </div>
-                    )
-                })}
-            </div>
-        )
+            <div style={{textAlign: 'center'}}>
+                {renderingContent}
+            </div>);
     }
 }
 

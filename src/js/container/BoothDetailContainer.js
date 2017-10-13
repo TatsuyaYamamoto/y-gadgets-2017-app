@@ -64,7 +64,7 @@ class BoothDetailContainer extends React.Component {
                     </CardMedia>
                     <CardTitle
                         title={booth ? booth.name : 'loading'}
-                        subtitle={booth ? booth.id : 'loading'}/>
+                        subtitle={booth ? booth.locationName : 'loading'}/>
                     <CardText>
                         {booth ? booth.description : 'loading'}
                     </CardText>
@@ -88,11 +88,8 @@ class BoothDetailContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     const boothId = ownProps.match.params.id;
-    const booth = state.firebase.booths[boothId];
-
-    return {
-        booth
-    }
+    const booth = state.firebase.getIn(['booths', boothId]);
+    return {booth}
 }
 
 function mapDispatchToProps(dispatch) {
