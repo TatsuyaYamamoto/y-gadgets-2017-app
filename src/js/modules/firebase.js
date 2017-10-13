@@ -1,4 +1,9 @@
 import * as firebase from 'firebase';
+import {Record, Map} from 'immutable';
+
+import Question from "./entity/Question";
+import FirebaseUser from "./entity/FirebaseUser";
+import Booth from "./entity/Booth";
 
 import {firebase as firebaseConfig} from '../config';
 
@@ -27,9 +32,11 @@ export function login() {
         dispatch(loginRequest());
         return app.auth().signInAnonymously()
             .then(function (user) {
+                console.log('Success to log-in to firebase system! user:', user);
                 dispatch(loginSuccess(user));
             })
             .catch(function (error) {
+                console.error('Fail to log-in.', error);
                 dispatch(loginFailure(error));
             });
     }
@@ -87,9 +94,11 @@ export function loadQuestions() {
 
         return app.database().ref('questions').once('value')
             .then((snapshot) => {
-                dispatch(loadQuestionsSuccess(snapshot.val()));
+                console.log('Success to load questions! snapshot:', snapshot);
+                dispatch(loadQuestionsSuccess(snapshot));
             })
             .catch((error) => {
+                console.error('Fail to load questions.', error);
                 dispatch({type: Actions.LOAD_QUESTIONS_FAILURE});
             });
     }
@@ -99,7 +108,7 @@ function loadQuestionsSuccess(snapshot) {
     return {
         type: Actions.LOAD_QUESTIONS_SUCCESS,
         payload: {
-            snapshot
+            questionsValue: snapshot.val()
         }
     }
 }
@@ -111,9 +120,11 @@ export function loadBooths() {
 
         return app.database().ref('booths').once('value')
             .then((snapshot) => {
-                dispatch(loadBoothsSuccess(snapshot.val()));
+                console.log('Success to load booths! snapshot:', snapshot);
+                dispatch(loadBoothsSuccess(snapshot));
             })
             .catch((error) => {
+                console.error('Fail to load booths.', error);
                 dispatch({type: Actions.LOAD_BOOTHS_FAILURE});
             });
     }
@@ -123,12 +134,12 @@ function loadBoothsSuccess(snapshot) {
     return {
         type: Actions.LOAD_BOOTHS_SUCCESS,
         payload: {
-            snapshot
+            boothsValue: snapshot.val()
         }
     }
 }
 
-export function postLike(boothId) {
+export function postBoothLike(boothId) {
     // check that the user logged-in.
     app.auth().onAuthStateChanged(function (user) {
         if (user) {
@@ -164,47 +175,55 @@ function getCurrentUser() {
 // ---------------------------------------------------------------------------
 // reducer
 // ---------------------------------------------------------------------------
-const initialState = {
+const initialStateRecord = Record({
+    loading: false,
     login: null,
-    questions: {},
-    booths: {}
-};
+    questions: Map({}),
+    booths: Map({})
+});
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state = new initialStateRecord(), action) {
     const {type, payload} = action;
-    switch (action.type) {
+    switch (type) {
         case Actions.LOGIN_REQUEST:
+        case Actions.LOGIN_FAILURE:
+        case Actions.LOAD_QUESTIONS_REQUEST:
+        case Actions.LOAD_QUESTIONS_FAILURE:
+        case Actions.LOAD_BOOTHS_REQUEST:
+        case Actions.LOAD_BOOTHS_FAILURE:
+            // TODO implement
             return state;
 
         case Actions.LOGIN_SUCCESS:
-            return Object.assign({}, state, {
-                login: payload.login
-            });
-
-        case Actions.LOGIN_FAILURE:
-            return state;
-
-        case Actions.LOAD_QUESTIONS_REQUEST:
-            return state;
+            return state
+                .set('loading', false)
+                .set('login', new FirebaseUser(payload.login));
 
         case Actions.LOAD_QUESTIONS_SUCCESS:
-            return Object.assign({}, state, {
-                questions: payload.snapshot
+            const {questionsValue} = payload;
+            const currentQuestions = state.get('questions');
+            const updatedQuestions = currentQuestions.withMutations((map) => {
+                Object
+                    .keys(questionsValue)
+                    .forEach(key => map.set(key, new Question(questionsValue[key])));
             });
 
-        case Actions.LOAD_QUESTIONS_FAILURE:
-            return state;
-
-        case Actions.LOAD_BOOTHS_REQUEST:
-            return state;
+            return state
+                .set('loading', false)
+                .set('questions', updatedQuestions);
 
         case Actions.LOAD_BOOTHS_SUCCESS:
-            return Object.assign({}, state, {
-                booths: payload.snapshot
+            const {boothsValue} = payload;
+            const currentBooths = state.get('questions');
+            const updatedBooths = currentBooths.withMutations((map) => {
+                Object
+                    .keys(boothsValue)
+                    .forEach(key => map.set(key, new Booth(boothsValue[key])));
             });
 
-        case Actions.LOAD_BOOTHS_FAILURE:
-            return state;
+            return state
+                .set('loading', false)
+                .set('booths', updatedBooths);
 
         default:
             return state;
