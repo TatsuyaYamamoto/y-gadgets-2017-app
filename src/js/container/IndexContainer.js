@@ -8,11 +8,17 @@ import SettingIcon from 'material-ui/svg-icons/action/settings';
 
 import Navigation from "../components/Navigation";
 import MysteryComponent from "../components/MysteryComponent";
+
 import {loadQuestions} from "../modules/firebase";
+import {inputAnswer} from "../modules/mystery";
 
 class IndexContainer extends React.Component {
     handleClickSettingButton = () => {
         this.props.history.push('setting');
+    };
+
+    handleInputAnswer = (questionId, value) => {
+        this.props.inputAnswer(questionId, value)
     };
 
     getStyles = () => {
@@ -39,7 +45,7 @@ class IndexContainer extends React.Component {
 
     render() {
         const styles = this.getStyles();
-        const {questions} = this.props;
+        const {questions, userAnswers} = this.props;
 
         return (
             <div>
@@ -51,7 +57,10 @@ class IndexContainer extends React.Component {
                     style={styles.appBar}/>
 
                 <div style={styles.content}>
-                    <MysteryComponent questions={questions}/>
+                    <MysteryComponent
+                        questions={questions}
+                        userAnswers={userAnswers}
+                        onChangeAnswer={this.handleInputAnswer}/>
                 </div>
 
                 <Navigation
@@ -64,7 +73,8 @@ class IndexContainer extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        questions: state.firebase.questions
+        questions: state.firebase.questions,
+        userAnswers: state.mystery.userAnswers
     }
 }
 
@@ -72,6 +82,9 @@ function mapDispatchToProps(dispatch) {
     return {
         loadQuestions: () => {
             dispatch(loadQuestions())
+        },
+        inputAnswer: (questionId, value) => {
+            dispatch(inputAnswer(questionId, value))
         }
     }
 }

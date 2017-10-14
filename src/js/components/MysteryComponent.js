@@ -1,13 +1,23 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 
+/**
+ * This char text field's able to have char value only.
+ * In changing, inputted character removes without the head of the character.
+ *
+ * @param props
+ * @returns {XML}
+ * @constructor
+ */
 const CharField = (props) => {
-    const {onChange} = props;
+    const {value, onChange} = props;
 
     return (
         <TextField
+            value={value}
             style={{
                 width: 20,
                 margin: 10,
@@ -15,91 +25,118 @@ const CharField = (props) => {
             inputStyle={{
                 textAlign: 'center'
             }}
-            onChange={onChange}
+            onChange={(event, newValue) => {
+                onChange(newValue.slice(0, 1))
+            }}
         />
     )
 };
 
-class AnswerField extends React.Component {
-    state = {
-        inputChars: []
-    };
+CharField.propTypes = {
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+};
 
-    handleUpdateField(index, newValue) {
-        const {inputChars} = this.state;
-        inputChars[index] = newValue;
 
-        this.setState({inputChars});
-        this.props.onChange(inputChars.join(''));
-    }
+/**
+ * This mystery answer text has some {@link CharField}s.
+ * The fields' length is same as {@params props.answer}'s length.
+ * {@params props.input} is set blank text, length is {@params props.answer}'s length,
+ * if {@params props.input} is undefined.
+ *
+ *
+ * @param props
+ * @returns {XML}
+ * @constructor
+ */
+const AnswerField = (props) => {
+    const {input, answer, onChange} = props;
+    const answerChars = answer.split('');
+    const inputChars = input ? input.split('') : answerChars.map(() => ' ');
 
-    componentDidMount() {
-        const {answer} = this.props;
-        const initialInputChars = answer.split('').map(char => ' ');
-        this.setState({inputChars: initialInputChars});
-    }
+    return (
+        <div style={{display: 'inline-block'}}>
+            {answerChars.map((char, index) => (
+                <CharField
+                    value={inputChars[index]}
+                    key={char}
+                    onChange={(newChar) => {
+                        inputChars[index] = newChar;
+                        onChange(inputChars.join(''));
+                    }}
+                />
+            ))}
+        </div>
+    )
 
-    render() {
-        const {answer} = this.props;
-        const answerChars = answer.split('');
+};
 
-        return (
-            <div style={{display: 'inline-block'}}>
-                {answerChars.map((char, index) => (
-                    <CharField
-                        key={char}
-                        onChange={(event, newValue) => {
-                            this.handleUpdateField(index, newValue);
-                        }}
-                    />
-                ))}
-            </div>
-        )
-    }
-}
+AnswerField.propTypes = {
+    input: PropTypes.string,
+    answer: PropTypes.string,
+    onChange: PropTypes.func,
+};
 
-class MysteryComponent extends React.Component {
-    state = {
-        inputAnswers: {}
-    };
+/**
+ *
+ * @param props
+ * @returns {XML}
+ * @constructor
+ */
+const SentenceSection = (props) => {
+    const {text} = props;
+    return (
+        <div>{text}</div>
+    )
+};
 
-    onChangeAnswerField(key, newValue) {
-        const {inputAnswers} = this.state;
-        this.setState({
-            inputAnswers: Object.assign(inputAnswers, {[key]: newValue})
-        });
-    }
+SentenceSection.propTypes = {
+    text: PropTypes.string,
+};
 
-    render() {
-        const {questions} = this.props;
 
-        const renderingContent =
-            questions.isEmpty() ?
-                // TODO create loading component.
-                <CircularProgress/> :
-                <div>
-                    {questions.map(q => {
-                        const {sentence, answer} = q;
-                        return (
-                            <div key={answer}>
+/**
+ *
+ * @returns {XML}
+ * @constructor
+ */
+const MysteryComponent = (props) => {
+    const {questions, userAnswers, onChangeAnswer} = props;
 
-                                {sentence}<br/>
+    const renderingContent =
+        questions.isEmpty() ?
+            // TODO create loading component.
+            <CircularProgress/> :
+            <div>
+                {questions.map((q, key) => {
+                    const input = userAnswers.get(key, '');
+                    const {sentence, answer} = q;
+                    return (
+                        <div key={answer}>
 
-                                <AnswerField
-                                    answer={answer}
-                                    onChange={(newValue) => {
-                                        this.onChangeAnswerField(key, newValue);
-                                    }}/>
-                            </div>
-                        )
-                    })}
-                </div>;
+                            <SentenceSection text={sentence}/><br/>
 
-        return (
-            <div style={{textAlign: 'center'}}>
-                {renderingContent}
-            </div>);
-    }
-}
+                            <AnswerField
+                                input={input}
+                                answer={answer}
+                                onChange={(newValue) => {
+                                    onChangeAnswer(key, newValue);
+                                }}/>
+                        </div>
+                    )
+                })}
+            </div>;
+
+    return (
+        <div style={{textAlign: 'center'}}>
+            {renderingContent}
+        </div>);
+};
+
+MysteryComponent.propTypes = {
+    questions: PropTypes.object,
+    userAnswers: PropTypes.object,
+    onChangeAnswer: PropTypes.func,
+};
 
 export default MysteryComponent;
