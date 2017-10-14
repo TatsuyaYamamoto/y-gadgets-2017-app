@@ -66,7 +66,7 @@ class SearchSpaceContainer extends React.Component {
     render() {
         const styles = this.getStyles();
         const {searchText, isSearching} = this.state;
-        const {booths} = this.props;
+        const {booths, pinedBooths} = this.props;
 
         const content =
             isSearching ? (
@@ -92,21 +92,19 @@ class SearchSpaceContainer extends React.Component {
                                     <IconButton onClick={this.showSearchList}><SearchIcon/></IconButton>
                                     <IconButton><ListIcon/></IconButton>
                                 </div>}/>
-                        <List>
-                            <Subheader>Pined booths</Subheader>
-                            <ListItem primaryText="Chelsea Otakan"/>
-                            <ListItem primaryText="James Anderson"/>
-                        </List>
+                        <BoothList
+                            subheader="Pined booths"
+                            booths={pinedBooths}
+                            onClick={this.handleClickBoothItem}/>
                         <Divider/>
-                        <List>
-                            <Subheader>Random recommend booths</Subheader>
-                            <ListItem
-                                primaryText="Chelsea Otakan"/>
-                            <ListItem primaryText="James Anderson"/>
-                        </List>
+                        {/*TODO: set booths with random ids.*/}
+                        <BoothList
+                            subheader="Random recommend booths"
+                            booths={pinedBooths}
+                            onClick={this.handleClickBoothItem}/>
                     </div>
                 );
-        
+
         return (
             <div>
                 {content}
@@ -119,8 +117,13 @@ class SearchSpaceContainer extends React.Component {
 }
 
 function mapStateToProps(state) {
+    const booths = state.firebase.booths;
+    const pinedIds = state.firebase.get('pins').keySeq();
+    const pinedBooths = pinedIds.map(id => booths.get(id));
+
     return {
-        booths: state.firebase.booths
+        booths,
+        pinedBooths
     }
 }
 
