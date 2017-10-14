@@ -3,12 +3,9 @@ import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
 
 import AppBar from 'material-ui/AppBar';
-import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-import Subheader from 'material-ui/Subheader';
 import IconButton from 'material-ui/IconButton';
 import SearchIcon from 'material-ui/svg-icons/action/search';
-import BackIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import ListIcon from 'material-ui/svg-icons/action/list';
 
 import Navigation from "../components/Navigation";
@@ -67,6 +64,8 @@ class SearchSpaceContainer extends React.Component {
         const styles = this.getStyles();
         const {searchText, isSearching} = this.state;
         const {booths, pinedBooths} = this.props;
+        const randomBooths = booths.sortBy(Math.random).slice(0, 5);
+
 
         const content =
             isSearching ? (
@@ -97,10 +96,9 @@ class SearchSpaceContainer extends React.Component {
                             booths={pinedBooths}
                             onClick={this.handleClickBoothItem}/>
                         <Divider/>
-                        {/*TODO: set booths with random ids.*/}
                         <BoothList
                             subheader="Random recommend booths"
-                            booths={pinedBooths}
+                            booths={randomBooths}
                             onClick={this.handleClickBoothItem}/>
                     </div>
                 );
