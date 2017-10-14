@@ -28,6 +28,9 @@ export const Actions = {
     POST_BOOTH_PIN_REQUEST: 'y-gadgets/firebase/POST_BOOTH_PIN_REQUEST',
     POST_BOOTH_PIN_SUCCESS: 'y-gadgets/firebase/POST_BOOTH_PIN_SUCCESS',
     POST_BOOTH_PIN_FAILURE: 'y-gadgets/firebase/POST_BOOTH_PIN_FAILURE',
+    POST_BOOTH_UNPIN_REQUEST: 'y-gadgets/firebase/POST_BOOTH_UNPIN_REQUEST',
+    POST_BOOTH_UNPIN_SUCCESS: 'y-gadgets/firebase/POST_BOOTH_UNPIN_SUCCESS',
+    POST_BOOTH_UNPIN_FAILURE: 'y-gadgets/firebase/POST_BOOTH_UNPIN_FAILURE',
     UPDATE_BOOTH: 'y-gadgets/firebase/UPDATE_BOOTH',
     UPDATE_OWN_PINS: 'y-gadgets/firebase/UPDATE_OWN_PINS',
     UPDATE_OWN_LIKES: 'y-gadgets/firebase/UPDATE_OWN_LIKES',
@@ -252,12 +255,8 @@ export function pinBooth(boothId) {
         return getCurrentUser()
             .then((user) => {
                 const updates = {};
-                updates[`/booths/${boothId}/pins`] = {
-                    [user.uid]: true
-                };
-                updates[`/users/${user.uid}/pins`] = {
-                    [boothId]: true,
-                };
+                updates[`/booths/${boothId}/pins/${user.uid}`] = true;
+                updates[`/users/${user.uid}/pins/${boothId}`] = true;
 
                 return app.database().ref().update(updates);
             })
@@ -290,6 +289,54 @@ function postBoothPinFailure(error) {
         error: true,
     }
 }
+
+
+/**
+ *
+ * @param boothId
+ */
+export function unpinBooth(boothId) {
+    return function (dispatch) {
+        dispatch(postBoothUnpinRequest());
+
+        return getCurrentUser()
+            .then((user) => {
+                const updates = {};
+                updates[`/booths/${boothId}/pins/${user.uid}`] = null;
+                updates[`/users/${user.uid}/pins/${boothId}`] = null;
+
+                return app.database().ref().update(updates);
+            })
+            .then(() => {
+                console.log("Success to post pin booth. ID: " + boothId);
+                dispatch(postBoothUnpinSuccess());
+            })
+            .catch((e) => {
+                console.error(e);
+                dispatch(postBoothUnpinFailure(e));
+            });
+    }
+}
+
+function postBoothUnpinRequest() {
+    return {type: Actions.POST_BOOTH_PIN_REQUEST}
+}
+
+
+function postBoothUnpinSuccess() {
+    return {
+        type: Actions.POST_BOOTH_PIN_SUCCESS,
+    }
+}
+
+function postBoothUnpinFailure(error) {
+    return {
+        type: Actions.POST_BOOTH_PIN_FAILURE,
+        payload: error,
+        error: true,
+    }
+}
+
 
 function getCurrentUser() {
     return new Promise(function (onFulfilled, onRejected) {

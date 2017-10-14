@@ -13,7 +13,7 @@ import VisibilityIcon from 'material-ui/svg-icons/action/visibility';
 import VisibilityOffIcon from 'material-ui/svg-icons/action/visibility-off';
 import FlatButton from 'material-ui/FlatButton';
 
-import {loadBooths, postBoothLike, pinBooth} from '../modules/firebase';
+import {loadBooths, postBoothLike, pinBooth, unpinBooth} from '../modules/firebase';
 
 const BoothCard = (props) => {
     const {booth} = props;
@@ -50,8 +50,12 @@ class BoothDetailContainer extends React.Component {
         this.props.postLike();
     };
 
-    handleVisibilityButtonClick = () => {
+    handlePin = () => {
         this.props.pinBooth();
+    };
+
+    handleUnpin = () => {
+        this.props.unpinBooth();
     };
 
     getStyles = () => {
@@ -77,12 +81,15 @@ class BoothDetailContainer extends React.Component {
 
     render() {
         const styles = this.getStyles();
-        const {booth, postLike} = this.props;
+        const {booth, isPined} = this.props;
 
         const appBarIconContainer = (
             <div>
                 <IconButton onClick={this.handleLickButtonClick}><FavoriteBorderIcon/></IconButton>
-                <IconButton onClick={this.handleVisibilityButtonClick}><VisibilityIcon/></IconButton>
+                {isPined ?
+                    <IconButton onClick={this.handleUnpin}><VisibilityIcon/></IconButton> :
+                    <IconButton onClick={this.handlePin}><VisibilityOffIcon/></IconButton>
+                }
             </div>
         );
 
@@ -107,7 +114,12 @@ class BoothDetailContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
     const boothId = ownProps.match.params.id;
     const booth = state.firebase.getIn(['booths', boothId]);
-    return {booth}
+    const isPined = state.firebase.get('pins').has(boothId);
+
+    return {
+        booth,
+        isPined
+    }
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
@@ -125,6 +137,9 @@ function mapDispatchToProps(dispatch, ownProps) {
         },
         pinBooth: () => {
             dispatch(pinBooth(boothId));
+        },
+        unpinBooth: () => {
+            dispatch(unpinBooth(boothId));
         }
     }
 }
