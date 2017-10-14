@@ -4,14 +4,18 @@ import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
-import SearchSvgIcon from 'material-ui/svg-icons/action/search';
+import BackSvgIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import CloseSvgIcon from 'material-ui/svg-icons/navigation/close';
 
-const SearchIcon = (props) => (<IconButton style={props.style} onClick={props.onClick}><SearchSvgIcon/></IconButton>);
+const BackIcon = (props) => (<IconButton style={props.style} onClick={props.onClick}><BackSvgIcon/></IconButton>);
 const ClearIcon = (props) => (<IconButton style={props.style} onClick={props.onClick}><CloseSvgIcon/></IconButton>);
 
 const SearchAppBar = (props) => {
-    const {style, value, onChange} = props;
+    const {
+        style, value,
+        onClickBack,
+        onChange
+    } = props;
 
     const styles = {
         root: Object.assign({
@@ -42,7 +46,7 @@ const SearchAppBar = (props) => {
         <Paper
             style={styles.root}
             zDepth={1}>
-            <SearchIcon style={styles.leftIcon}/>
+            <BackIcon onClick={onClickBack} style={styles.leftIcon}/>
 
             <TextField
                 style={styles.text}
@@ -58,6 +62,7 @@ const SearchAppBar = (props) => {
 SearchAppBar.propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func,
+    onClickBack: PropTypes.func,
 };
 
 export default SearchAppBar;

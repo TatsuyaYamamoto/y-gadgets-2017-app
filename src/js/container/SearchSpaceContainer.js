@@ -2,6 +2,15 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
 
+import AppBar from 'material-ui/AppBar';
+import {List, ListItem} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
+import Subheader from 'material-ui/Subheader';
+import IconButton from 'material-ui/IconButton';
+import SearchIcon from 'material-ui/svg-icons/action/search';
+import BackIcon from 'material-ui/svg-icons/navigation/arrow-back';
+import ListIcon from 'material-ui/svg-icons/action/list';
+
 import Navigation from "../components/Navigation";
 import SearchAppBar from "../components/SearchAppBar";
 
@@ -10,7 +19,16 @@ import BoothList from "../components/BoothList";
 
 class SearchSpaceContainer extends React.Component {
     state = {
+        isSearching: false,
         searchText: ''
+    };
+
+    showSearchList = () => {
+        this.setState({isSearching: true})
+    };
+
+    showGeneralList = () => {
+        this.setState({isSearching: false})
     };
 
     handleClickBoothItem = (id) => {
@@ -47,22 +65,51 @@ class SearchSpaceContainer extends React.Component {
 
     render() {
         const styles = this.getStyles();
-        const {searchText} = this.state;
+        const {searchText, isSearching} = this.state;
         const {booths} = this.props;
 
+        const content =
+            isSearching ? (
+                    <div>
+                        <SearchAppBar
+                            value={searchText}
+                            style={styles.appBar}
+                            onClickBack={this.showGeneralList}
+                            onChange={this.handleChangeSearchText}/>
+                        <div style={styles.content}>
+                            <BoothList
+                                booths={booths}
+                                onClick={this.handleClickBoothItem}/>
+                        </div>
+                    </div>
+                ) :
+                (
+                    <div>
+                        <AppBar
+                            showMenuIconButton={false}
+                            iconElementRight={
+                                <div>
+                                    <IconButton onClick={this.showSearchList}><SearchIcon/></IconButton>
+                                    <IconButton><ListIcon/></IconButton>
+                                </div>}/>
+                        <List>
+                            <Subheader>Pined booths</Subheader>
+                            <ListItem primaryText="Chelsea Otakan"/>
+                            <ListItem primaryText="James Anderson"/>
+                        </List>
+                        <Divider/>
+                        <List>
+                            <Subheader>Random recommend booths</Subheader>
+                            <ListItem
+                                primaryText="Chelsea Otakan"/>
+                            <ListItem primaryText="James Anderson"/>
+                        </List>
+                    </div>
+                );
+        
         return (
             <div>
-                <SearchAppBar
-                    value={searchText}
-                    style={styles.appBar}
-                    onChange={this.handleChangeSearchText}/>
-
-                <div style={styles.content}>
-                    <BoothList
-                        booths={booths}
-                        onClick={this.handleClickBoothItem}/>
-                </div>
-
+                {content}
                 <Navigation
                     style={styles.navigation}
                     activeIndex={0}/>
