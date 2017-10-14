@@ -124,7 +124,7 @@ class SearchSpaceContainer extends React.Component {
 function mapStateToProps(state) {
     const booths = state.firebase.booths;
     const pinedIds = state.firebase.get('pins');
-    const pinedBooths = pinedIds.map((value, key) => booths.get(key));
+    const pinedBooths = booths.filter((b, key) => pinedIds.has(key));
 
     return {
         booths,
