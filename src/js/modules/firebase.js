@@ -149,16 +149,22 @@ function loadBoothsSuccess(snapshot) {
 export function postBoothLike(boothId) {
     return function (dispatch) {
         dispatch(postBoothLikeRequest());
-        
+
         return getCurrentUser()
             .then((user) => {
                 const newLikeKey = app.database().ref('likes').push().key;
-                const value = {
+                const updates = {};
+                updates[`/booths/${boothId}/likes`] = {
+                    [user.uid]: true
+                };
+                updates[`/likes/${newLikeKey}`] = {
                     uid: user.uid,
                     booth_id: boothId,
                     timestamp: firebase.database.ServerValue.TIMESTAMP
                 };
-                return app.database().ref(`/likes/${newLikeKey}`).set(value);
+
+
+                return app.database().ref().update(updates);
             })
             .then(() => {
                 console.log("Success to post like booth. ID: " + boothId);

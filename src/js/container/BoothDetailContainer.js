@@ -3,9 +3,13 @@ import {connect} from 'react-redux';
 import {goBack} from 'react-router-redux';
 
 import AppBar from 'material-ui/AppBar';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardActions, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import ArrowBackIcon from 'material-ui/svg-icons/navigation/arrow-back';
+import FavoriteIcon from 'material-ui/svg-icons/action/favorite';
+import VisibilityIcon from 'material-ui/svg-icons/action/visibility';
+import VisibilityOffIcon from 'material-ui/svg-icons/action/visibility-off';
+import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import {loadBooths, postBoothLike} from '../modules/firebase';
@@ -50,7 +54,7 @@ class BoothDetailContainer extends React.Component {
     render() {
         const styles = this.getStyles();
         const {booth, postLike} = this.props;
-
+        console.log(booth && booth.likes.size);
         return (
             <div>
                 <AppBar
@@ -68,6 +72,16 @@ class BoothDetailContainer extends React.Component {
                     <CardText>
                         {booth ? booth.description : 'loading'}
                     </CardText>
+                    <CardActions>
+                        <FlatButton
+                            label={booth ? booth.likes.size : 0}
+                            icon={<FavoriteIcon/>}
+                        />
+                        <FlatButton
+                            label={booth ? booth.visibilities.size : 0}
+                            icon={<VisibilityIcon/>}
+                        />
+                    </CardActions>
                 </Card>
 
                 <RaisedButton
