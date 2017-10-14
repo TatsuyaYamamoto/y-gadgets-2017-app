@@ -26,7 +26,7 @@ const CharField = (props) => {
                 textAlign: 'center'
             }}
             onChange={(event, newValue) => {
-                onChange(newValue.slice(0, 1))
+                onChange(newValue.trim().slice(0, 1))
             }}
         />
     )
@@ -61,7 +61,9 @@ const AnswerField = (props) => {
                     value={inputChars[index]}
                     key={char}
                     onChange={(newChar) => {
-                        inputChars[index] = newChar;
+                        !newChar || newChar === '' ?
+                            inputChars[index] = ' ' :
+                            inputChars[index] = newChar;
                         onChange(inputChars.join(''));
                     }}
                 />
