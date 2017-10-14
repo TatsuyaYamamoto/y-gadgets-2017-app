@@ -28,6 +28,7 @@ export const Actions = {
     POST_BOOTH_PIN_REQUEST: 'y-gadgets/firebase/POST_BOOTH_PIN_REQUEST',
     POST_BOOTH_PIN_SUCCESS: 'y-gadgets/firebase/POST_BOOTH_PIN_SUCCESS',
     POST_BOOTH_PIN_FAILURE: 'y-gadgets/firebase/POST_BOOTH_PIN_FAILURE',
+    UPDATE_LOAD_BOOTH: 'y-gadgets/firebase/UPDATE_LOAD_BOOTH',
 };
 
 // ---------------------------------------------------------------------------
@@ -35,6 +36,13 @@ export const Actions = {
 // ---------------------------------------------------------------------------
 export function login() {
     return function (dispatch) {
+
+        // init event
+        app.database().ref('booths').on('child_changed', function (snapshot, prevChildKey) {
+            dispatch(updateBooth(snapshot));
+        });
+
+
         dispatch(loginRequest());
         return app.auth().signInAnonymously()
             .then(function (user) {
@@ -199,6 +207,16 @@ function postBoothLikeFailure(error) {
     }
 }
 
+export function updateBooth(snapshot) {
+    return {
+        type: Actions.UPDATE_LOAD_BOOTH,
+        payload: {
+            boothId: snapshot.key,
+            boothValue: snapshot.val()
+        }
+    }
+}
+
 /**
  *
  * @param boothId
@@ -316,6 +334,9 @@ export default function reducer(state = new initialStateRecord(), action) {
             return state
                 .set('loading', false)
                 .set('booths', updatedBooths);
+
+        case Actions.UPDATE_LOAD_BOOTH:
+            return state.setIn(['booths', payload.boothId], new Booth(payload.boothValue));
 
         default:
             return state;
