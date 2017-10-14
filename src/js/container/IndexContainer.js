@@ -8,6 +8,7 @@ import SettingIcon from 'material-ui/svg-icons/action/settings';
 
 import Navigation from "../components/Navigation";
 import MysteryComponent from "../components/MysteryComponent";
+import MysteryComplete from "../components/MysteryComplete";
 
 import {loadQuestions} from "../modules/firebase";
 import {inputAnswer} from "../modules/mystery";
@@ -45,7 +46,13 @@ class IndexContainer extends React.Component {
 
     render() {
         const styles = this.getStyles();
-        const {questions, userAnswers} = this.props;
+        const {questions, userAnswers, isMysteryCompleted} = this.props;
+        const mainContent = isMysteryCompleted ?
+            <MysteryComplete/> :
+            <MysteryComponent
+                questions={questions}
+                userAnswers={userAnswers}
+                onChangeAnswer={this.handleInputAnswer}/>;
 
         return (
             <div>
@@ -57,10 +64,7 @@ class IndexContainer extends React.Component {
                     style={styles.appBar}/>
 
                 <div style={styles.content}>
-                    <MysteryComponent
-                        questions={questions}
-                        userAnswers={userAnswers}
-                        onChangeAnswer={this.handleInputAnswer}/>
+                    {mainContent}
                 </div>
 
                 <Navigation
@@ -74,7 +78,8 @@ class IndexContainer extends React.Component {
 function mapStateToProps(state) {
     return {
         questions: state.firebase.questions,
-        userAnswers: state.mystery.userAnswers
+        userAnswers: state.mystery.userAnswers,
+        isMysteryCompleted: state.mystery.isCompleted,
     }
 }
 
