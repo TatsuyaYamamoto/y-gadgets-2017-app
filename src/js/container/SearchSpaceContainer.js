@@ -65,7 +65,9 @@ class SearchSpaceContainer extends React.Component {
         const {searchText, isSearching} = this.state;
         const {booths, pinedBooths} = this.props;
         const randomBooths = booths.sortBy(Math.random).slice(0, 5);
-
+        const searchedBooths = booths.filter((b) => {
+            return [b.name, b.locationName, b.owner, b.description].join('').indexOf(searchText) !== -1;
+        });
 
         const content =
             isSearching ? (
@@ -77,7 +79,7 @@ class SearchSpaceContainer extends React.Component {
                             onChange={this.handleChangeSearchText}/>
                         <div style={styles.content}>
                             <BoothList
-                                booths={booths}
+                                booths={searchedBooths}
                                 onClick={this.handleClickBoothItem}/>
                         </div>
                     </div>
