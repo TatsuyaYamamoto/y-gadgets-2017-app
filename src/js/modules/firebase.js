@@ -25,6 +25,9 @@ export const Actions = {
     POST_BOOTH_LIKE_REQUEST: 'y-gadgets/firebase/POST_BOOTH_LIKE_REQUEST',
     POST_BOOTH_LIKE_SUCCESS: 'y-gadgets/firebase/POST_BOOTH_LIKE_SUCCESS',
     POST_BOOTH_LIKE_FAILURE: 'y-gadgets/firebase/POST_BOOTH_LIKE_FAILURE',
+    POST_BOOTH_PIN_REQUEST: 'y-gadgets/firebase/POST_BOOTH_PIN_REQUEST',
+    POST_BOOTH_PIN_SUCCESS: 'y-gadgets/firebase/POST_BOOTH_PIN_SUCCESS',
+    POST_BOOTH_PIN_FAILURE: 'y-gadgets/firebase/POST_BOOTH_PIN_FAILURE',
 };
 
 // ---------------------------------------------------------------------------
@@ -191,6 +194,56 @@ function postBoothLikeSuccess(firebaseUser) {
 function postBoothLikeFailure(error) {
     return {
         type: Actions.POST_BOOTH_LIKE_FAILURE,
+        payload: error,
+        error: true,
+    }
+}
+
+/**
+ *
+ * @param boothId
+ */
+export function pinBooth(boothId) {
+    return function (dispatch) {
+        dispatch(postBoothPinRequest());
+
+        return getCurrentUser()
+            .then((user) => {
+                const updates = {};
+                updates[`/booths/${boothId}/pins`] = {
+                    [user.uid]: true
+                };
+                updates[`/users/${user.uid}/pins`] = {
+                    [boothId]: true,
+                };
+
+                return app.database().ref().update(updates);
+            })
+            .then(() => {
+                console.log("Success to post pin booth. ID: " + boothId);
+                dispatch(postBoothPinSuccess(boothId));
+            })
+            .catch((e) => {
+                console.error(e);
+                dispatch(postBoothPinFailure());
+            });
+    }
+}
+
+function postBoothPinRequest() {
+    return {type: Actions.POST_BOOTH_PIN_REQUEST}
+}
+
+
+function postBoothPinSuccess(boothId) {
+    return {
+        type: Actions.POST_BOOTH_PIN_SUCCESS,
+    }
+}
+
+function postBoothPinFailure(error) {
+    return {
+        type: Actions.POST_BOOTH_PIN_FAILURE,
         payload: error,
         error: true,
     }

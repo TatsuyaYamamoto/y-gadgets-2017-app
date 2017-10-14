@@ -13,7 +13,7 @@ import VisibilityIcon from 'material-ui/svg-icons/action/visibility';
 import VisibilityOffIcon from 'material-ui/svg-icons/action/visibility-off';
 import FlatButton from 'material-ui/FlatButton';
 
-import {loadBooths, postBoothLike} from '../modules/firebase';
+import {loadBooths, postBoothLike, pinBooth} from '../modules/firebase';
 
 const BoothCard = (props) => {
     const {booth} = props;
@@ -51,6 +51,7 @@ class BoothDetailContainer extends React.Component {
     };
 
     handleVisibilityButtonClick = () => {
+        this.props.pinBooth();
     };
 
     getStyles = () => {
@@ -121,6 +122,9 @@ function mapDispatchToProps(dispatch, ownProps) {
         },
         postLike: () => {
             dispatch(postBoothLike(boothId));
+        },
+        pinBooth: () => {
+            dispatch(pinBooth(boothId));
         }
     }
 }
