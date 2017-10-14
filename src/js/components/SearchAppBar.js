@@ -14,7 +14,8 @@ const SearchAppBar = (props) => {
     const {
         style, value,
         onClickBack,
-        onChange
+        onChange,
+        onClickClear,
     } = props;
 
     const styles = {
@@ -54,7 +55,7 @@ const SearchAppBar = (props) => {
                 value={value}
                 onChange={onChange}/>
 
-            <ClearIcon style={styles.rightIcon}/>
+            <ClearIcon onClick={onClickClear} style={styles.rightIcon}/>
         </Paper>
     )
 };
@@ -63,6 +64,7 @@ SearchAppBar.propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func,
     onClickBack: PropTypes.func,
+    onClickClear: PropTypes.func,
 };
 
 export default SearchAppBar;

@@ -36,6 +36,10 @@ class SearchSpaceContainer extends React.Component {
         this.setState({searchText: newValue});
     };
 
+    handleClearSearchText = (event, newValue) => {
+        this.setState({searchText: ''});
+    };
+
     getStyles = () => {
         return {
             appBar: {
@@ -76,7 +80,8 @@ class SearchSpaceContainer extends React.Component {
                             value={searchText}
                             style={styles.appBar}
                             onClickBack={this.showGeneralList}
-                            onChange={this.handleChangeSearchText}/>
+                            onChange={this.handleChangeSearchText}
+                            onClickClear={this.handleClearSearchText}/>
                         <div style={styles.content}>
                             <BoothList
                                 booths={searchedBooths}
