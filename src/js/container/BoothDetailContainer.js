@@ -34,7 +34,7 @@ const BoothCard = (props) => {
                     icon={<FavoriteIcon/>}
                 />
                 <FlatButton
-                    label={booth.visibilities.size}
+                    label={booth.pins.size}
                     icon={<VisibilityIcon/>}
                 />
             </CardActions>

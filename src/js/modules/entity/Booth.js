@@ -11,13 +11,13 @@ const BoothRecord = Record({
     owner: null,
     description: null,
     likes: Map({}),
-    visibilities: Map({}),
+    pins: Map({}),
 });
 
 export default class Booth extends BoothRecord {
     constructor(params) {
         return super(params)
             .set('likes', Map(params.likes))
-            .set('visibilities', Map(params.visibilities));
+            .set('pins', Map(params.pins));
     }
 }
