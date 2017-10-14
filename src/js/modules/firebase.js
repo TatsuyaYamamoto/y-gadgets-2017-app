@@ -28,7 +28,9 @@ export const Actions = {
     POST_BOOTH_PIN_REQUEST: 'y-gadgets/firebase/POST_BOOTH_PIN_REQUEST',
     POST_BOOTH_PIN_SUCCESS: 'y-gadgets/firebase/POST_BOOTH_PIN_SUCCESS',
     POST_BOOTH_PIN_FAILURE: 'y-gadgets/firebase/POST_BOOTH_PIN_FAILURE',
-    UPDATE_LOAD_BOOTH: 'y-gadgets/firebase/UPDATE_LOAD_BOOTH',
+    UPDATE_BOOTH: 'y-gadgets/firebase/UPDATE_BOOTH',
+    UPDATE_OWN_PINS: 'y-gadgets/firebase/UPDATE_OWN_PINS',
+    UPDATE_OWN_LIKES: 'y-gadgets/firebase/UPDATE_OWN_LIKES',
 };
 
 // ---------------------------------------------------------------------------
@@ -36,18 +38,22 @@ export const Actions = {
 // ---------------------------------------------------------------------------
 export function login() {
     return function (dispatch) {
-
-        // init event
-        app.database().ref('booths').on('child_changed', function (snapshot, prevChildKey) {
-            dispatch(updateBooth(snapshot));
-        });
-
-
         dispatch(loginRequest());
         return app.auth().signInAnonymously()
             .then(function (user) {
                 console.log('Success to log-in to firebase system! user:', user);
                 dispatch(loginSuccess(user));
+
+                // init event
+                app.database().ref('booths').on('child_changed', function (snapshot) {
+                    dispatch(updateBooth(snapshot));
+                });
+                app.database().ref(`users/${user.uid}/likes`).on('child_changed', function (snapshot) {
+                    dispatch(updateOwnLikes(snapshot));
+                });
+                app.database().ref(`users/${user.uid}/pins`).on('child_changed', function (snapshot) {
+                    dispatch(updateOwnPins(snapshot));
+                });
             })
             .catch(function (error) {
                 console.error('Fail to log-in.', error);
@@ -173,7 +179,9 @@ export function postBoothLike(boothId) {
                     booth_id: boothId,
                     timestamp: firebase.database.ServerValue.TIMESTAMP
                 };
-
+                updates[`/users/${user.uid}/likes`] = {
+                    [boothId]: true,
+                };
 
                 return app.database().ref().update(updates);
             })
@@ -209,10 +217,30 @@ function postBoothLikeFailure(error) {
 
 export function updateBooth(snapshot) {
     return {
-        type: Actions.UPDATE_LOAD_BOOTH,
+        type: Actions.UPDATE_BOOTH,
         payload: {
             boothId: snapshot.key,
             boothValue: snapshot.val()
+        }
+    }
+}
+
+export function updateOwnPins(snapshot) {
+    return {
+        type: Actions.UPDATE_OWN_PINS,
+        payload: {
+            id: snapshot.key,
+            value: snapshot.val()
+        }
+    }
+}
+
+export function updateOwnLikes(snapshot) {
+    return {
+        type: Actions.UPDATE_OWN_LIKES,
+        payload: {
+            id: snapshot.key,
+            value: snapshot.val()
         }
     }
 }
@@ -288,6 +316,8 @@ function getCurrentUser() {
 const initialStateRecord = Record({
     loading: false,
     login: null,
+    pins: Map({}),
+    likes: Map({}),
     questions: Map({}),
     booths: Map({})
 });
@@ -335,8 +365,14 @@ export default function reducer(state = new initialStateRecord(), action) {
                 .set('loading', false)
                 .set('booths', updatedBooths);
 
-        case Actions.UPDATE_LOAD_BOOTH:
+        case Actions.UPDATE_BOOTH:
             return state.setIn(['booths', payload.boothId], new Booth(payload.boothValue));
+
+        case Actions.UPDATE_OWN_PINS:
+            return state.setIn(['pins', payload.key], payload.value);
+
+        case Actions.UPDATE_OWN_LIKES:
+            return state.setIn(['likes', payload.key], payload.value);
 
         default:
             return state;
