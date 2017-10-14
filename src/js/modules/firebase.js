@@ -48,10 +48,12 @@ export function login() {
                 app.database().ref('booths').on('child_changed', function (snapshot) {
                     dispatch(updateBooth(snapshot));
                 });
-                app.database().ref(`users/${user.uid}/likes`).on('child_changed', function (snapshot) {
+                app.database().ref(`users/${user.uid}/likes`).on('value', function (snapshot) {
+                    console.log("update likes!", snapshot.key, snapshot.val());
                     dispatch(updateOwnLikes(snapshot));
                 });
-                app.database().ref(`users/${user.uid}/pins`).on('child_changed', function (snapshot) {
+                app.database().ref(`users/${user.uid}/pins`).on('value', function (snapshot) {
+                    console.log("update pins!", snapshot);
                     dispatch(updateOwnPins(snapshot));
                 });
             })
@@ -171,17 +173,13 @@ export function postBoothLike(boothId) {
             .then((user) => {
                 const newLikeKey = app.database().ref('likes').push().key;
                 const updates = {};
-                updates[`/booths/${boothId}/likes`] = {
-                    [user.uid]: true
-                };
+                updates[`/booths/${boothId}/likes/${user.uid}`] = true;
                 updates[`/likes/${newLikeKey}`] = {
                     uid: user.uid,
                     booth_id: boothId,
                     timestamp: firebase.database.ServerValue.TIMESTAMP
                 };
-                updates[`/users/${user.uid}/likes`] = {
-                    [boothId]: true,
-                };
+                updates[`/users/${user.uid}/likes/${boothId}`] = true;
 
                 return app.database().ref().update(updates);
             })
@@ -229,7 +227,6 @@ export function updateOwnPins(snapshot) {
     return {
         type: Actions.UPDATE_OWN_PINS,
         payload: {
-            id: snapshot.key,
             value: snapshot.val()
         }
     }
@@ -239,7 +236,6 @@ export function updateOwnLikes(snapshot) {
     return {
         type: Actions.UPDATE_OWN_LIKES,
         payload: {
-            id: snapshot.key,
             value: snapshot.val()
         }
     }
@@ -369,10 +365,10 @@ export default function reducer(state = new initialStateRecord(), action) {
             return state.setIn(['booths', payload.boothId], new Booth(payload.boothValue));
 
         case Actions.UPDATE_OWN_PINS:
-            return state.setIn(['pins', payload.key], payload.value);
+            return state.set('pins', Map(payload.value));
 
         case Actions.UPDATE_OWN_LIKES:
-            return state.setIn(['likes', payload.key], payload.value);
+            return state.set('likes', Map(payload.value));
 
         default:
             return state;
