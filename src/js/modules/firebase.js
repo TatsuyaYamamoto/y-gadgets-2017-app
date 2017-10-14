@@ -22,6 +22,9 @@ export const Actions = {
     LOAD_BOOTHS_REQUEST: 'y-gadgets/firebase/LOAD_BOOTHS_REQUEST',
     LOAD_BOOTHS_SUCCESS: 'y-gadgets/firebase/LOAD_BOOTHS_SUCCESS',
     LOAD_BOOTHS_FAILURE: 'y-gadgets/firebase/LOAD_BOOTHS_FAILURE',
+    POST_BOOTH_LIKE_REQUEST: 'y-gadgets/firebase/POST_BOOTH_LIKE_REQUEST',
+    POST_BOOTH_LIKE_SUCCESS: 'y-gadgets/firebase/POST_BOOTH_LIKE_SUCCESS',
+    POST_BOOTH_LIKE_FAILURE: 'y-gadgets/firebase/POST_BOOTH_LIKE_FAILURE',
 };
 
 // ---------------------------------------------------------------------------
@@ -139,23 +142,52 @@ function loadBoothsSuccess(snapshot) {
     }
 }
 
+/**
+ *
+ * @param boothId
+ */
 export function postBoothLike(boothId) {
-    // check that the user logged-in.
-    app.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            // User is signed in.
-            const db = app.database();
-            const newLikeKey = db.ref('likes').ref.push().key;
-            db.ref(`likes/${newLikeKey}`).set({
-                uid: user.uid,
-                booth_id: boothId,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
+    return function (dispatch) {
+        dispatch(postBoothLikeRequest());
+        
+        return getCurrentUser()
+            .then((user) => {
+                const newLikeKey = app.database().ref('likes').push().key;
+                const value = {
+                    uid: user.uid,
+                    booth_id: boothId,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                };
+                return app.database().ref(`/likes/${newLikeKey}`).set(value);
+            })
+            .then(() => {
+                console.log("Success to post like booth. ID: " + boothId);
+                dispatch(postBoothLikeSuccess());
+            })
+            .catch((e) => {
+                console.error(e);
+                dispatch(postBoothLikeFailure());
             });
+    }
+}
 
-        } else {
-            // No user is signed in.
-        }
-    });
+function postBoothLikeRequest() {
+    return {type: Actions.POST_BOOTH_LIKE_REQUEST}
+}
+
+
+function postBoothLikeSuccess(firebaseUser) {
+    return {
+        type: Actions.POST_BOOTH_LIKE_SUCCESS,
+    }
+}
+
+function postBoothLikeFailure(error) {
+    return {
+        type: Actions.POST_BOOTH_LIKE_FAILURE,
+        payload: error,
+        error: true,
+    }
 }
 
 function getCurrentUser() {
@@ -166,6 +198,7 @@ function getCurrentUser() {
                 onFulfilled(user);
             } else {
                 // No user is signed in.
+                // TODO: handle to failure post.
                 onRejected();
             }
         });

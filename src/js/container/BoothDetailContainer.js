@@ -8,7 +8,7 @@ import IconButton from 'material-ui/IconButton';
 import ArrowBackIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import {loadBooths} from '../modules/firebase';
+import {loadBooths, postBoothLike} from '../modules/firebase';
 
 const LikeButton = (props) => (
     <RaisedButton
@@ -49,7 +49,7 @@ class BoothDetailContainer extends React.Component {
 
     render() {
         const styles = this.getStyles();
-        const {booth} = this.props;
+        const {booth, postLike} = this.props;
 
         return (
             <div>
@@ -73,6 +73,7 @@ class BoothDetailContainer extends React.Component {
                 <RaisedButton
                     primary
                     label="Like"
+                    onClick={postLike}
                     style={{
                         width: '80%',
                         margin: 20,
@@ -92,13 +93,18 @@ function mapStateToProps(state, ownProps) {
     return {booth}
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
+    const boothId = ownProps.match.params.id;
+
     return {
         goBack: () => {
             dispatch(goBack())
         },
         loadBooths: (id) => {
             dispatch(loadBooths(id));
+        },
+        postLike: () => {
+            dispatch(postBoothLike(boothId));
         }
     }
 }
