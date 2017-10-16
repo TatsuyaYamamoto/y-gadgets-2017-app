@@ -1,6 +1,6 @@
 {
   "name": "y-gadgets-2017-app",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "yokohama gadgets fes app",
   "main": "index.js",
   "scripts": {
