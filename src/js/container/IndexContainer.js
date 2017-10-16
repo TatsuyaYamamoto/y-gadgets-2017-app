@@ -10,12 +10,22 @@ import HelpIcon from 'material-ui/svg-icons/action/help-outline';
 import Navigation from "../components/Navigation";
 import MysteryComponent from "../components/MysteryComponent";
 import MysteryComplete from "../components/MysteryComplete";
+import MysteryHelpDialog from '../components/helpDialog/MysteryHelpDialog';
 
 import {loadQuestions} from "../modules/firebase";
 import {inputAnswer} from "../modules/mystery";
 
 class IndexContainer extends React.Component {
+    state = {
+        isHelpOpen: false,
+    };
+
     handleClickHelpButton = () => {
+        this.setState({isHelpOpen: true});
+    };
+
+    handleRequestCloseHelp = () => {
+        this.setState({isHelpOpen: false});
     };
 
     handleClickSettingButton = () => {
@@ -50,6 +60,7 @@ class IndexContainer extends React.Component {
 
     render() {
         const styles = this.getStyles();
+        const {isHelpOpen} = this.state;
         const {questions, userAnswers, isMysteryCompleted} = this.props;
         const mainContent = isMysteryCompleted ?
             <MysteryComplete/> :
@@ -80,6 +91,10 @@ class IndexContainer extends React.Component {
                 <Navigation
                     style={styles.navigation}
                     activeIndex={1}/>
+
+                <MysteryHelpDialog
+                    open={isHelpOpen}
+                    onRequestClose={this.handleRequestCloseHelp}/>
             </div>
         )
     }

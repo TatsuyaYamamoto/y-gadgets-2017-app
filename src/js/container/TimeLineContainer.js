@@ -7,9 +7,19 @@ import HelpIcon from 'material-ui/svg-icons/action/help-outline';
 
 import Navigation from "../components/Navigation";
 import FxTimeLine from "../components/FxTimeLine";
+import TimelineHelpDialog from '../components/helpDialog/TimelineHelpDialog';
 
 class TweetContainer extends React.Component {
+    state = {
+        isHelpOpen: false,
+    };
+
     handleClickHelpButton = () => {
+        this.setState({isHelpOpen: true});
+    };
+
+    handleRequestCloseHelp = () => {
+        this.setState({isHelpOpen: false});
     };
 
     handleClickSettingButton = () => {
@@ -27,6 +37,7 @@ class TweetContainer extends React.Component {
     };
 
     render() {
+        const {isHelpOpen} = this.state;
         const styles = this.getStyles();
 
         const rightIcons = (
@@ -46,6 +57,9 @@ class TweetContainer extends React.Component {
                 <Navigation
                     style={styles.navigation}
                     activeIndex={2}/>
+                <TimelineHelpDialog
+                    open={isHelpOpen}
+                    onRequestClose={this.handleRequestCloseHelp}/>
             </div>
         )
     }

@@ -11,12 +11,14 @@ import ListIcon from 'material-ui/svg-icons/action/list';
 
 import Navigation from "../components/Navigation";
 import SearchAppBar from "../components/SearchAppBar";
+import BoothList from "../components/BoothList";
+import SearchHelpDialog from '../components/helpDialog/SearchHelpDialog';
 
 import {loadBooths} from '../modules/firebase';
-import BoothList from "../components/BoothList";
 
 class SearchSpaceContainer extends React.Component {
     state = {
+        isHelpOpen: false,
         isSearching: false,
         searchText: ''
     };
@@ -34,8 +36,12 @@ class SearchSpaceContainer extends React.Component {
     };
 
     handleClickHelpButton = () => {
+        this.setState({isHelpOpen: true});
     };
 
+    handleRequestCloseHelp = () => {
+        this.setState({isHelpOpen: false});
+    };
 
     handleChangeSearchText = (event, newValue) => {
         this.setState({searchText: newValue});
@@ -71,7 +77,7 @@ class SearchSpaceContainer extends React.Component {
 
     render() {
         const styles = this.getStyles();
-        const {searchText, isSearching} = this.state;
+        const {searchText, isSearching, isHelpOpen} = this.state;
         const {booths, pinedBooths} = this.props;
         const randomBooths = booths.sortBy(Math.random).slice(0, 5);
         const searchedBooths = booths.filter((b) => {
@@ -125,6 +131,9 @@ class SearchSpaceContainer extends React.Component {
                 <Navigation
                     style={styles.navigation}
                     activeIndex={0}/>
+                <SearchHelpDialog
+                    open={isHelpOpen}
+                    onRequestClose={this.handleRequestCloseHelp}/>
             </div>
         )
     }
