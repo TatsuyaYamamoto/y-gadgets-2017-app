@@ -24,4 +24,20 @@ const App = () => {
     )
 };
 
+/**
+ * Error handling for failure to catch.
+ *
+ * @param messageOrEvent
+ * @param source
+ * @param lineno
+ * @param colno
+ * @param error
+ */
+window.onerror = function (messageOrEvent, source, lineno, colno, error) {
+    console.error(messageOrEvent, source, lineno, colno, error);
+    if (window.confirm('エラーが発生したため、リロードします。')) {
+        location.reload();
+    }
+};
+
 export default App;
