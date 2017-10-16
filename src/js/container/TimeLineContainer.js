@@ -5,7 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import SettingIcon from 'material-ui/svg-icons/action/settings';
 import HelpIcon from 'material-ui/svg-icons/action/help-outline';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import TwitterIcon from '../components/TwitterIcon';
 
 import Navigation from "../components/Navigation";
 import FxTimeLine from "../components/FxTimeLine";
@@ -64,7 +64,7 @@ class TweetContainer extends React.Component {
             <FloatingActionButton
                 onClick={this.handleClickTweetButton}
                 style={styles.tweetButton}>
-                <ContentAdd/>
+                <TwitterIcon/>
             </FloatingActionButton>
         );
 
