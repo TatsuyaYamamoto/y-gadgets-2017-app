@@ -6,3 +6,6 @@ export const firebase = {
     storageBucket: "y-gadgets-2017-app.appspot.com",
     messagingSenderId: "162221715500"
 };
+
+
+export const APP_URL = "http://localhost";
