@@ -5,6 +5,7 @@ import {push} from 'react-router-redux';
 import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
+import HelpIcon from 'material-ui/svg-icons/action/help-outline';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import ListIcon from 'material-ui/svg-icons/action/list';
 
@@ -31,6 +32,10 @@ class SearchSpaceContainer extends React.Component {
     handleClickBoothItem = (id) => {
         this.props.push(`/booths/${id}`);
     };
+
+    handleClickHelpButton = () => {
+    };
+
 
     handleChangeSearchText = (event, newValue) => {
         this.setState({searchText: newValue});
@@ -73,6 +78,14 @@ class SearchSpaceContainer extends React.Component {
             return [b.name, b.locationName, b.owner, b.description].join('').indexOf(searchText) !== -1;
         });
 
+        const rightIcons = (
+            <div>
+                <IconButton onClick={this.handleClickHelpButton}><HelpIcon/></IconButton>
+                <IconButton onClick={this.showSearchList}><SearchIcon/></IconButton>
+                <IconButton><ListIcon/></IconButton>
+            </div>
+        );
+
         const content =
             isSearching ? (
                     <div>
@@ -93,11 +106,7 @@ class SearchSpaceContainer extends React.Component {
                     <div>
                         <AppBar
                             showMenuIconButton={false}
-                            iconElementRight={
-                                <div>
-                                    <IconButton onClick={this.showSearchList}><SearchIcon/></IconButton>
-                                    <IconButton><ListIcon/></IconButton>
-                                </div>}/>
+                            iconElementRight={rightIcons}/>
                         <BoothList
                             subheader="Pined booths"
                             booths={pinedBooths}

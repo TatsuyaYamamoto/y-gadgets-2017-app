@@ -7,6 +7,7 @@ import {Card, CardActions, CardMedia, CardTitle, CardText} from 'material-ui/Car
 import CircularProgress from 'material-ui/CircularProgress';
 import IconButton from 'material-ui/IconButton';
 import ArrowBackIcon from 'material-ui/svg-icons/navigation/arrow-back';
+import HelpIcon from 'material-ui/svg-icons/action/help-outline';
 import FavoriteIcon from 'material-ui/svg-icons/action/favorite';
 import FavoriteBorderIcon from 'material-ui/svg-icons/action/favorite-border';
 import VisibilityIcon from 'material-ui/svg-icons/action/visibility';
@@ -46,6 +47,9 @@ class BoothDetailContainer extends React.Component {
         this.props.goBack();
     };
 
+    handleClickHelpButton = () => {
+    };
+
     handleLickButtonClick = () => {
         this.props.postLike();
     };
@@ -83,8 +87,9 @@ class BoothDetailContainer extends React.Component {
         const styles = this.getStyles();
         const {booth, isPined} = this.props;
 
-        const appBarIconContainer = (
+        const rightIcons = (
             <div>
+                <IconButton onClick={this.handleClickHelpButton}><HelpIcon/></IconButton>
                 <IconButton onClick={this.handleLickButtonClick}><FavoriteBorderIcon/></IconButton>
                 {isPined ?
                     <IconButton onClick={this.handleUnpin}><VisibilityIcon/></IconButton> :
@@ -98,7 +103,7 @@ class BoothDetailContainer extends React.Component {
                 <AppBar
                     iconElementLeft={<IconButton><ArrowBackIcon/></IconButton>}
                     onLeftIconButtonTouchTap={this.handleClickBack}
-                    iconElementRight={appBarIconContainer}
+                    iconElementRight={rightIcons}
                     title="Detail"/>
 
                 <div style={styles.content}>
