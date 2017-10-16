@@ -397,7 +397,7 @@ export default function reducer(state = new initialStateRecord(), action) {
 
         case Actions.LOAD_BOOTHS_SUCCESS:
             const {boothsValue} = payload;
-            const currentBooths = state.get('questions');
+            const currentBooths = state.get('booths');
             const updatedBooths = currentBooths.withMutations((map) => {
                 Object
                     .keys(boothsValue)
