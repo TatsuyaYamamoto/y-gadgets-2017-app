@@ -88,7 +88,6 @@ class SearchSpaceContainer extends React.Component {
             <div>
                 <IconButton onClick={this.handleClickHelpButton}><HelpIcon/></IconButton>
                 <IconButton onClick={this.showSearchList}><SearchIcon/></IconButton>
-                <IconButton><ListIcon/></IconButton>
             </div>
         );
 
