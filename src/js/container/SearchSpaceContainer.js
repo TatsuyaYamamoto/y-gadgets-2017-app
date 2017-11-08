@@ -2,16 +2,18 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
 
+import {List} from 'immutable';
+
 import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import HelpIcon from 'material-ui/svg-icons/action/help-outline';
 import SearchIcon from 'material-ui/svg-icons/action/search';
-import ListIcon from 'material-ui/svg-icons/action/list';
 
 import Navigation from "../components/Navigation";
 import SearchAppBar from "../components/SearchAppBar";
 import BoothList from "../components/booth-list/BoothList";
+import SearchBoothList from "../components/booth-list/SearchBoothList";
 import SearchHelpDialog from '../components/helpDialog/SearchHelpDialog';
 
 import {loadBooths} from '../modules/firebase';
@@ -80,9 +82,11 @@ class SearchSpaceContainer extends React.Component {
         const {searchText, isSearching, isHelpOpen} = this.state;
         const {booths, pinedBooths} = this.props;
         const randomBooths = booths.sortBy(Math.random).slice(0, 5);
-        const searchedBooths = booths.filter((b) => {
-            return [b.name, b.locationName, b.owner, b.description].join('').indexOf(searchText) !== -1;
-        });
+        const searchedBooths = !searchText ?
+            List() :
+            booths.filter((b) => {
+                return [b.name, b.locationName, b.owner, b.description].join('').indexOf(searchText) !== -1;
+            });
 
         const rightIcons = (
             <div>
@@ -101,7 +105,7 @@ class SearchSpaceContainer extends React.Component {
                             onChange={this.handleChangeSearchText}
                             onClickClear={this.handleClearSearchText}/>
                         <div style={styles.content}>
-                            <BoothList
+                            <SearchBoothList
                                 booths={searchedBooths}
                                 onClick={this.handleClickBoothItem}/>
                         </div>
