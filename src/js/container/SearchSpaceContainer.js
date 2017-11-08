@@ -11,7 +11,7 @@ import ListIcon from 'material-ui/svg-icons/action/list';
 
 import Navigation from "../components/Navigation";
 import SearchAppBar from "../components/SearchAppBar";
-import BoothList from "../components/BoothList";
+import BoothList from "../components/booth-list/BoothList";
 import SearchHelpDialog from '../components/helpDialog/SearchHelpDialog';
 
 import {loadBooths} from '../modules/firebase';
