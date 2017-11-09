@@ -8,21 +8,23 @@ import {List} from 'immutable';
 import SearchAppBar from "../../components/SearchAppBar";
 import SearchBoothList from "../../components/booth-list/SearchBoothList";
 
-class SearchBoothContainer extends React.Component {
-    state = {
-        searchText: ''
-    };
+import {search, clearSearchCondition, selectCategory} from '../../modules/booth';
 
+class SearchBoothContainer extends React.Component {
     handleClickBoothItem = (id) => {
         this.props.push(`/booths/${id}`);
     };
 
-    handleChangeSearchText = (event, newValue) => {
-        this.setState({searchText: newValue});
+    handleChangeSearchText = (newValue) => {
+        this.props.search(newValue);
     };
 
-    handleClearSearchText = (event, newValue) => {
-        this.setState({searchText: ''});
+    handleClearSearchText = () => {
+        this.props.clearSearchCondition();
+    };
+
+    handleSelectCategory = (name) => {
+        this.props.selectCategory(name);
     };
 
     getStyles = () => {
@@ -41,18 +43,18 @@ class SearchBoothContainer extends React.Component {
 
     render() {
         const styles = this.getStyles();
-        const {searchText} = this.state;
-        const {booths} = this.props;
-        const searchedBooths = !searchText ?
+        const {booths, currentQuery, currentCategory} = this.props;
+        const searchedBooths = !currentQuery ?
             List() :
             booths.filter((b) => {
-                return [b.name, b.locationName, b.owner, b.description].join('').indexOf(searchText) !== -1;
+                return [b.name, b.locationName, b.owner, b.description].join('').indexOf(currentQuery) !== -1;
             });
 
         return (
             <div>
                 <SearchAppBar
-                    value={searchText}
+                    categoryValue={currentCategory}
+                    queryValue={currentQuery}
                     style={styles.appBar}
                     onClickBack={this.props.onRequestClose}
                     onChange={this.handleChangeSearchText}
@@ -60,7 +62,8 @@ class SearchBoothContainer extends React.Component {
                 <div style={styles.content}>
                     <SearchBoothList
                         booths={searchedBooths}
-                        onClick={this.handleClickBoothItem}/>
+                        onClick={this.handleClickBoothItem}
+                        onSelectCategory={this.handleSelectCategory}/>
                 </div>
             </div>
         )
@@ -74,12 +77,12 @@ SearchBoothContainer.propTypes = {
 
 function mapStateToProps(state) {
     const booths = state.firebase.booths;
-    const pinedIds = state.firebase.get('pins');
-    const pinedBooths = booths.filter((b, key) => pinedIds.has(key));
+    const {query, category} = state.booth;
 
     return {
         booths,
-        pinedBooths
+        currentQuery: query,
+        currentCategory: category,
     }
 }
 
@@ -87,6 +90,15 @@ function mapDispatchToProps(dispatch) {
     return {
         push: (path) => {
             dispatch(push(path))
+        },
+        search: (query) => {
+            dispatch(search(query))
+        },
+        clearSearchCondition: () => {
+            dispatch(clearSearchCondition())
+        },
+        selectCategory: (name) => {
+            dispatch(selectCategory(name))
         }
     }
 }

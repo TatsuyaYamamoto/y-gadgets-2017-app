@@ -12,7 +12,9 @@ const ClearIcon = (props) => (<IconButton style={props.style} onClick={props.onC
 
 const SearchAppBar = (props) => {
     const {
-        style, value,
+        style,
+        queryValue,
+        categoryValue,
         onClickBack,
         onChange,
         onClickClear,
@@ -43,6 +45,14 @@ const SearchAppBar = (props) => {
         },
     };
 
+    const showingQuery = !categoryValue ?
+        `${queryValue}` :
+        `is:${categoryValue} ${queryValue}`;
+
+    const onChangeText = (event, newValue) => {
+        return onChange(newValue.replace(/is:(booth|stage|workshop)/, '').trim());
+    };
+
     return (
         <Paper
             style={styles.root}
@@ -52,8 +62,8 @@ const SearchAppBar = (props) => {
             <TextField
                 style={styles.text}
                 hintText="Search booth"
-                value={value}
-                onChange={onChange}/>
+                value={showingQuery}
+                onChange={onChangeText}/>
 
             <ClearIcon onClick={onClickClear} style={styles.rightIcon}/>
         </Paper>
@@ -61,7 +71,8 @@ const SearchAppBar = (props) => {
 };
 
 SearchAppBar.propTypes = {
-    value: PropTypes.string,
+    queryValue: PropTypes.string,
+    categoryValue: PropTypes.string,
     onChange: PropTypes.func,
     onClickBack: PropTypes.func,
     onClickClear: PropTypes.func,
