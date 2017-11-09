@@ -26,7 +26,7 @@ class Navigation extends React.Component {
                     <BottomNavigationItem
                         label="Search"
                         icon={recentsIcon}
-                        onClick={() => this.props.push('/search')}
+                        onClick={() => this.props.push('/booths')}
                     />
                     <BottomNavigationItem
                         label="Mystery"
