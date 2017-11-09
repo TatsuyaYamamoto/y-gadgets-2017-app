@@ -5,7 +5,7 @@ import {syncHistory} from './modules/redux';
 
 import Index from './container/IndexContainer';
 import Tweet from './container/TimeLineContainer';
-import Search from './container/SearchSpaceContainer';
+import Booth from './container/BoothListContainer';
 import BoothDetail from './container/BoothDetailContainer';
 import Setting from './container/SettingContainer';
 
@@ -14,7 +14,7 @@ const Routing = () => (
         <Switch>
             <Route exact path="/mystery" component={Index}/>
             <Route exact path="/timeline" component={Tweet}/>
-            <Route exact path="/search" component={Search}/>
+            <Route exact path="/booths" component={Booth}/>
             <Route exact path="/booths/:id" component={BoothDetail}/>
             <Route exact path="/setting" component={Setting}/>
             <Redirect from="*" to="/mystery"/>
