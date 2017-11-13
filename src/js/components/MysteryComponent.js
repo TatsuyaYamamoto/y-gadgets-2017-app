@@ -59,7 +59,7 @@ const AnswerField = (props) => {
             {answerChars.map((char, index) => (
                 <CharField
                     value={inputChars[index]}
-                    key={char}
+                    key={char + index}
                     onChange={(newChar) => {
                         !newChar || newChar === '' ?
                             inputChars[index] = ' ' :
