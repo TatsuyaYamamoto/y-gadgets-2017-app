@@ -13,14 +13,7 @@ const styles = {
         display: 'flex',
         flexWrap: 'nowrap',
         overflowX: 'auto',
-    },
-    gridItem: {
-        width: 300,
-        wordBreak: 'keepAll',
-    },
-    titleStyle: {
-        // color: 'rgb(0, 188, 212)',
-    },
+    }
 };
 
 const HelpGridLine = (props) => {
@@ -33,12 +26,8 @@ const HelpGridLine = (props) => {
                     <GridTile
                         key={data.title}
                         title={data.title}
-                        titleStyle={styles.titleStyle}
                         titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)">
-                        <img src={data.image_url} />
-                        <div style={styles.gridItem}>
-                            {data.description}
-                        </div>
+                        <img src={data.image_url}/>
                     </GridTile>
                 ))}
             </GridList>
