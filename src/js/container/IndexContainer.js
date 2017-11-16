@@ -37,6 +37,7 @@ class IndexContainer extends React.Component {
     };
 
     getStyles = () => {
+        const contentHorizontalMargin = 20;
         return {
             appBar: {
                 position: 'fixed',
@@ -50,7 +51,9 @@ class IndexContainer extends React.Component {
             content: {
                 textAlign: 'center',
                 marginTop: 64,  // spacing.desktopKeylineIncrement
-                marginBottom: 56, // getMuiTheme.bottomNavigation.height
+                // marginBottom: 56, // getMuiTheme.bottomNavigation.height
+                marginRight: contentHorizontalMargin,
+                marginLeft: contentHorizontalMargin,
             }
         }
     };
