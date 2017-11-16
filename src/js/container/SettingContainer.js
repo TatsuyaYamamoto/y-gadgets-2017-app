@@ -70,11 +70,8 @@ class SettingContainer extends React.Component {
 
                 <List>
                     <SubHeader>General</SubHeader>
-                    <ListItem primaryText="Language"/>
-                    <ListItem
-                        primaryText="User ID"
-                        secondaryText={userId}
-                    />
+                    <ListItem primaryText="User ID"
+                        secondaryText={userId}/>
                 </List>
                 <Divider/>
                 <List>
