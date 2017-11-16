@@ -1,5 +1,7 @@
 import {Record, Map, is} from 'immutable';
 
+import {sendCompleteEvent} from '../ga';
+
 // ---------------------------------------------------------------------------
 // Actions
 // ---------------------------------------------------------------------------
@@ -59,6 +61,7 @@ export function checkComplete() {
         if (isCompleted) {
             console.log('Complete to resolve all question!');
             localStorage.setItem('is_mystery_completed', true);
+            sendCompleteEvent();
         }
 
         dispatch({

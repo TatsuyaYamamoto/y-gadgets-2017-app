@@ -3,6 +3,8 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Provider} from 'react-redux'
 
+import {sendAppLoodEvent} from './ga';
+
 import Routing from './Routing';
 import {store} from './modules/redux';
 import {login} from './modules/firebase';
@@ -17,6 +19,9 @@ store.dispatch(login());
 
 // check the user resolved all questions.
 store.dispatch(init());
+
+// GA
+sendAppLoodEvent();
 
 const App = () => {
     return (
