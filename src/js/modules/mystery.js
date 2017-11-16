@@ -12,6 +12,20 @@ export const Actions = {
 // Action creators
 // ---------------------------------------------------------------------------
 /**
+ * Check that the user already resolved all question.
+ *
+ * @returns {Function}
+ */
+export function init() {
+    return {
+        type: Actions.CHECK_COMPLETE,
+        payload: {
+            isCompleted: !!localStorage.getItem('is_mystery_completed')
+        }
+    };
+}
+
+/**
  *
  * @param questionId
  * @param value
@@ -42,7 +56,11 @@ export function checkComplete() {
         const actual = getState().mystery.get('userAnswers');
         const isCompleted = is(expected, actual);
 
-        isCompleted && console.log('Complete to resolve all question!');
+        if (isCompleted) {
+            console.log('Complete to resolve all question!');
+            localStorage.setItem('is_mystery_completed', true);
+        }
+
         dispatch({
             type: Actions.CHECK_COMPLETE,
             payload: {isCompleted}
