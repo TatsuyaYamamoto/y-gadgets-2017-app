@@ -9,20 +9,21 @@ import HelpGridLine from './HelpGridLine';
 
 const helps = [
     {
-        title: '問題を解こう！',
-        description: '説明文説明文説明文説明文説明文 description description description description description description description',
+        title: '問題を確認しよう！',
         image_url: 'https://firebasestorage.googleapis.com/v0/b/y-gadgets-2017-app.appspot.com/o/help%2FMystery_1.png?alt=media'
     },
     {
-        title: '会場でヒントを探そう！',
-        description: '説明文説明文説明文説明文説明文 description description description description description description description',
+        title: 'ヒントを探そう！',
         image_url: 'https://firebasestorage.googleapis.com/v0/b/y-gadgets-2017-app.appspot.com/o/help%2FMystery_2.png?alt=media'
     },
     {
-        title: '全問正解すると？',
-        description: '説明文説明文説明文説明文説明文 description description description description description description description',
+        title: '答えを入力しよう！',
         image_url: 'https://firebasestorage.googleapis.com/v0/b/y-gadgets-2017-app.appspot.com/o/help%2FMystery_3.png?alt=media'
     },
+    {
+        title: '全問正解すると…！',
+        image_url: 'https://firebasestorage.googleapis.com/v0/b/y-gadgets-2017-app.appspot.com/o/help%2FMystery_4.png?alt=media'
+    }
 ];
 
 const MysteryHelpDialog = (props) => {
