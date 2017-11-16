@@ -48,6 +48,7 @@ class IndexContainer extends React.Component {
                 width: '100%'
             },
             content: {
+                textAlign: 'center',
                 marginTop: 64,  // spacing.desktopKeylineIncrement
                 marginBottom: 56, // getMuiTheme.bottomNavigation.height
             }
@@ -81,10 +82,11 @@ class IndexContainer extends React.Component {
                 <AppBar
                     showMenuIconButton={false}
                     iconElementRight={rightIcons}
-                    title="Mystery"
                     style={styles.appBar}/>
 
                 <div style={styles.content}>
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbE3YVHOGpos_emeI5vkcud_C7LQH1lQE6HS0AHYJdRA4mqA34"/>
                     {mainContent}
                 </div>
 
