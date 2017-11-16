@@ -8,15 +8,9 @@ import HelpGridLine from './HelpGridLine';
 
 const helps = [
     {
-        title: 'ガジェット祭りのタイムラインを確認しよう！',
-        description: '説明文説明文説明文説明文説明文 description description description description description description description',
-
-    },
-    {
-        title: 'ガジェット祭りのツイートをしよう！',
-        description: '説明文説明文説明文説明文説明文 description description description description description description description',
-
-    },
+        title: 'つぶやきを確認！',
+        image_url: 'https://firebasestorage.googleapis.com/v0/b/y-gadgets-2017-app.appspot.com/o/help%2FTwitter_2.png?alt=media'
+    }
 ];
 
 const TimelineHelpDialog = (props) => {
