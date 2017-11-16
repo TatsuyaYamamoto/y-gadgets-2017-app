@@ -24,11 +24,6 @@ class Navigation extends React.Component {
                 zDepth={1}>
                 <BottomNavigation selectedIndex={activeIndex}>
                     <BottomNavigationItem
-                        label="Search"
-                        icon={recentsIcon}
-                        onClick={() => this.props.push('/search')}
-                    />
-                    <BottomNavigationItem
                         label="Mystery"
                         icon={favoritesIcon}
                         onClick={() => this.props.push('/')}

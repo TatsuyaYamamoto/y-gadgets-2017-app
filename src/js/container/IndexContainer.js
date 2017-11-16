@@ -93,6 +93,10 @@ class IndexContainer extends React.Component {
                     {mainContent}
                 </div>
 
+                <Navigation
+                    style={styles.navigation}
+                    activeIndex={0}/>
+
                 <MysteryHelpDialog
                     open={isHelpOpen}
                     onRequestClose={this.handleRequestCloseHelp}/>

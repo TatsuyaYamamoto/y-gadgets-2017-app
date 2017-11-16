@@ -78,7 +78,7 @@ class TweetContainer extends React.Component {
                 {tweetButton}
                 <Navigation
                     style={styles.navigation}
-                    activeIndex={2}/>
+                    activeIndex={1}/>
                 <TimelineHelpDialog
                     open={isHelpOpen}
                     onRequestClose={this.handleRequestCloseHelp}/>
